@@ -1,0 +1,168 @@
+<%- include('header') %>
+<style>
+  body {
+    margin-top: 20px;
+    background-color: #f1f3f7;
+  }
+  .activity-checkout {
+    list-style: none;
+  }
+  .activity-checkout .checkout-icon {
+    position: absolute;
+    top: -4px;
+    left: -24px;
+  }
+  .activity-checkout .checkout-item {
+    position: relative;
+    padding-bottom: 24px;
+    padding-left: 35px;
+    border-left: 2px solid #f5f6f8;
+  }
+  .activity-checkout .checkout-item:last-child {
+    border-color: transparent;
+  }
+  .activity-checkout .checkout-item.crypto-activity {
+    margin-left: 50px;
+  }
+  .activity-checkout .checkout-item .crypto-date {
+    position: absolute;
+    top: 3px;
+    left: -65px;
+  }
+  .card-radio {
+    background-color: #fff;
+    border: 2px solid #eff0f2;
+    border-radius: .75rem;
+    padding: .5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+  }
+  .card-radio:hover {
+    cursor: pointer;
+  }
+  .card-radio-label {
+    display: block;
+  }
+  .edit-btn {
+    width: 35px;
+    height: 35px;
+    line-height: 40px;
+    text-align: center;
+    position: absolute;
+    right: 25px;
+    margin-top: -50px;
+  }
+  .card-radio-input {
+    display: none;
+  }
+  .card-radio-input:checked+.card-radio {
+    border-color: #3b76e1 !important;
+  }
+  .font-size-16 {
+    font-size: 16px !important;
+  }
+  .text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  a {
+    text-decoration: none !important;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .center-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+  }
+  .form-container {
+    width: 90%;
+  }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Address</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="row" style="padding-top: 70px;">
+      <div class="col-xl-8 mx-auto">
+        <div class="card">
+          <div class="card-body">
+            <ol class="activity-checkout mb-0 px-4 mt-3">
+              <li class="checkout-item">
+                <div class="feed-item-list">
+                  <div>
+                    <h1 class="font-size-13 mb-3">Address information</h1>
+                    <div class="mb-3 center-form">
+                      <form class="form-container" action="/editaddresspost" method="post">
+                        <input type="hidden" name="_id" value="<%= addressobj._id %>">
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <div class="mb-3">
+                              <label class="form-label" for="billing-name">Name</label>
+                              <input type="text" class="form-control" id="billing-name" placeholder="Enter name" name="name" value="<%= addressobj.name %>">
+                            </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="mb-3">
+                              <label class="form-label" for="billing-phone">Phone</label>
+                              <input type="text" class="form-control" id="billing-phone" placeholder="Enter Phone no." name="phone" value="<%= addressobj.phone %>">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label" for="billing-address">Address</label>
+                          <textarea class="form-control" id="billing-address" rows="3" placeholder="Enter full address" name="address"><%= addressobj.address %></textarea>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <div class="mb-4 mb-lg-0">
+                              <label class="form-label" for="billing-state">State</label>
+                              <input type="text" class="form-control" id="billing-state" placeholder="Enter State" name="state" value="<%= addressobj.state %>">
+                            </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="mb-4 mb-lg-0">
+                              <label class="form-label" for="billing-city">City</label>
+                              <input type="text" class="form-control" id="billing-city" placeholder="Enter City" name="city" value="<%= addressobj.city %>">
+                            </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="mb-0">
+                              <label class="form-label" for="zip-code">Zip / Postal code</label>
+                              <input type="text" class="form-control" id="zip-code" placeholder="Enter Postal code" name="zip" value="<%= addressobj.zip %>">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="text-end mt-2 mt-sm-0">
+                          <button class="btn btn-success" style="margin-top: 60px;">
+                            <i class="mdi mdi-cart-outline me-1"></i> Save
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<%-include('header') %>
+<style>
+    body {
+        margin-top: 20px;
+        background: #f5f5f5;
+        font-family: 'Lato', sans-serif;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .filters {
+        width: 20%;
+        background-color: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 20px;
+        width: 75%;
+    }
+
+    .card {
+        width: 18rem;
+        background-color: white;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-img-top {
+        height: 211px;
+        object-fit: cover;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 32px;
+        margin-top: 10px;
+        margin-left: 36px;
+        width: 72%;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .card-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        color: #777;
+    }
+
+    .card-text .price {
+        font-weight: bold;
+        color: #21c2f8;
+    }
+
+    .card-text .discount {
+        color: #e74c3c;
+        font-weight: 600;
+    }
+
+    .card-text .offer-price {
+        font-weight: 600;
+        color: #2ecc71;
+    }
+
+    .card-text .ratings {
+        color: #f39c12;
+    }
+
+    .btn-primary {
+        background-color: #21c2f8;
+        border: none;
+        border-radius: 30px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0c9cdb;
+    }
+
+    .form-select {
+        width: 100%;
+    }
+    /* ------------------------------------------------------ */ 
+
+     .pagination {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+
+  .pagination a {
+    margin: 0 5px;
+    padding: 10px 15px;
+    background-color: #fff;
+    color: #007bff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+
+  .pagination a.active {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .pagination a:hover {
+    background-color: #ddd;
+  }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Product Cards</title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="filters">
+            <form id="sortFilterForm" method="get" action="/productlistPage">
+                <h4>Search</h4>
+                <input type="text" name="query" class="form-control mb-4" placeholder="Search products..." value="<%= req.query.query || '' %>">
+            
+                <h4>Sort By</h4>
+                <select name="sortBy" class="form-select mb-4" onchange="this.form.submit()">
+                    <option value="">Select</option>
+                    <option value="priceAsc" <%= req.query.sortBy === 'priceAsc' ? 'selected' : '' %>>Price: Low to High</option>
+                    <option value="priceDesc" <%= req.query.sortBy === 'priceDesc' ? 'selected' : '' %>>Price: High to Low</option>
+                    <option value="nameAsc" <%= req.query.sortBy === 'nameAsc' ? 'selected' : '' %>>Name: A to Z</option>
+                    <option value="nameDesc" <%= req.query.sortBy === 'nameDesc' ? 'selected' : '' %>>Name: Z to A</option>
+                </select>
+            
+                <h4>Filter By Category</h4>
+                <select name="filterBy" class="form-select mb-4" onchange="this.form.submit()">
+                    <option value="">Select Category</option>
+                    <% categories.forEach(category => { %>
+                        <option value="<%= category._id %>" <%= req.query.filterBy === category._id.toString() ? 'selected' : '' %>><%= category.name %></option>
+                    <% }) %>
+                </select>
+            
+                <!-- Hidden input to keep current page when sorting/filtering -->
+                <input type="hidden" name="page" value="<%= currentPage %>">
+            
+                <!-- Reset button -->
+                <button type="button" class="btn btn-secondary" onclick="window.location='/productlistPage'">Reset</button>
+            </form>
+        </div>
+
+        <div class="card-container">
+            <% productData.filter(product => product.isListed).forEach(element => { %>
+            <div class="card">
+                <img src="/uploads/<%= element.image[element.image.length - 1] %>" class="card-img-top" alt="<%= element.ProductName %>">
+                <div class="card-body">
+                    <h5 class="card-title"><%= element.ProductName %></h5>
+                    <p class="card-text"> 
+                        <span class="price">MRP: <%= element.Mrp %></span>
+                        <% if (element.price < element.Mrp) { %>
+                            <br><span class="offer-price">Offer Price: <%= element.price %></span>
+                            <br><span class="discount">Discount: <%= Math.round(((element.Mrp - element.price) / element.Mrp) * 100) %>%</span>
+                        <% } %>
+                    </p>
+                    <p class="card-text ratings">&#9733;&#9733;&#9733;&#9733; &#9734;</p>
+                    <a href="/landPctDls/<%= element._id %>" class="btn btn-primary">View</a>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <div class="pagination">
+        <% if (currentPage > 1) { %>
+          <a href="?page=<%= currentPage - 1 %>&sortBy=<%= req.query.sortBy %>&filterBy=<%= req.query.filterBy %>&query=<%= req.query.query %>">&laquo; Previous</a>
+        <% } %>
+      
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="?page=<%= i %>&sortBy=<%= req.query.sortBy %>&filterBy=<%= req.query.filterBy %>&query=<%= req.query.query %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+        <% } %>
+      
+        <% if (currentPage < totalPages) { %>
+          <a href="?page=<%= currentPage + 1 %>&sortBy=<%= req.query.sortBy %>&filterBy=<%= req.query.filterBy %>&query=<%= req.query.query %>">Next &raquo;</a>
+        <% } %>
+      </div>
+
+    
+</body>
+
+<%-include('footer') %>
+</html>

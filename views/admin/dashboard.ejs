@@ -1,0 +1,617 @@
+<style>
+
+
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.top-details{
+  margin-top: 70px;
+  display: flex;
+ justify-content: space-around;
+  
+}
+
+
+.sidebar {
+      border-radius: 10px;
+      position: fixed;
+      left: 5px;
+      top: 70px;
+      height: calc(100% - 75px);
+      width: 250px;
+      background-color: #282626;
+      padding-top: 60px;
+      overflow-y: auto;
+    }
+.sidebar a {
+  padding: 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #ffffff;
+  display: block;
+  transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #495057;
+}
+
+
+.sidebar a:hover {
+      background-color: #e0cfcf;
+      color: #f8f8f8;
+    }
+    .main-content {
+  margin-left: 250px;
+  padding: 20px;
+  width: calc(100% - 250px);
+  padding-top: 20px;
+  box-sizing: border-box;
+}
+
+.card-header {
+  font-size: 1.5em;
+  color: #343a40;
+}
+
+
+.card-header {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.btn-success {
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.dashboard-card {
+  flex: 1 1 calc(33% - 20px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container {
+  width: 100%;
+  height: 300px;
+}
+
+
+
+.btn-success:hover {
+  background-color: #f8f8f8;
+}
+
+.alert-dismissible .close {
+  padding: 0.75rem 1.25rem;
+  color: inherit;
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.filter-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.filter-container select, 
+.filter-container button {
+  padding: 10px;
+  font-size: 16px;
+}
+
+/* ------------------------------------------------------------------------------ */
+.salesData {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    margin-bottom: 20px; /* Add spacing between cards */
+}
+
+.card-header {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+.sales-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sales-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sales-item:last-child {
+    border-bottom: none; /* Remove border for last item */
+}
+
+.sales-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.sales-date {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.sales-amount {
+    color: #ffffff; /* Green color for sales amount */
+}
+/* ------------------------------------------------------------------------------------------ */
+
+body{
+    margin-top:20px;
+    background:#FAFAFA;
+}
+.order-card {
+    color: #fff;
+}
+
+.bg-c-blue {
+    background: linear-gradient(45deg,#930d64,#d61e9c);
+}
+
+.bg-c-green {
+    background: linear-gradient(45deg,#7d6119,#4d4938);
+}
+
+.bg-c-yellow {
+    background: linear-gradient(45deg,#7d6119,#4d4938);
+}
+
+.bg-c-pink {
+    background: linear-gradient(45deg,#7d6119,#4d4938);
+}
+
+
+.card {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(234, 238, 243, 0.16);
+    box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+    border: none;
+    margin-bottom: 30px;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.card .card-block {
+    padding: 25px;
+}
+
+.order-card i {
+    font-size: 26px;
+}
+
+.f-left {
+    float: left;
+}
+
+.f-right {
+    float: right;
+}
+/* -------------------------------------------------------------------------- */
+
+
+
+.topProducts {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px; /* Add spacing between cards */
+}
+
+.card-header {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+.products-list {
+    padding: 0;
+    margin: 0;
+}
+
+.product-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 1.1em;
+}
+
+.product-item:last-child {
+    border-bottom: none; /* Remove border for last item */
+}
+
+.quantity-sold {
+    color: #ffffff; /* Blue color for quantity */
+    font-weight: bold;
+}
+/* -------------------------------------------------------------------------- */
+.paymentMethods {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(250, 248, 248, 0.1);
+    padding: 20px;
+    margin-bottom: 20px; /* Spacing between sections */
+}
+
+.card-header {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+.payments-list {
+    padding: 0;
+    margin: 0;
+}
+
+.payment-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 1.1em;
+}
+
+.payment-item:last-child {
+    border-bottom: none; /* Remove border for the last item */
+}
+
+.payment-method {
+    font-weight: bold;
+    color: #fbfbfb;
+}
+
+.payment-amount {
+    color: #fbfbfb; /* Green color for payment amount */
+    font-weight: bold;
+}
+/* -------------------------------------------------------------------------- */
+
+.chart-container {
+  width: 100%;
+  height: 400px;
+}
+
+.chart-container canvas {
+  width: 100%;
+  height: 100%;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+}
+
+#productsList p {
+  margin: 10px 0;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    top: 0;
+    padding-top: 0; 
+  }
+
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding-top: 20px; /* Adjust padding for mobile view */
+  }
+  
+  .filter-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .filter-container select, 
+  .filter-container button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+}
+
+</style>
+
+<%- include('adminheader') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title >Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"> 
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+  
+
+  <div class="sidebar">
+    <div class="admin" style="color: #adadad; margin-left: 20px; margin-bottom: 30px;">
+      <h5>Admin Panel</h5>
+    </div>
+    <a href="#">Dashboard</a>
+    <a href="/admin/usermanagement">User Management</a>
+    <a href="/admin/productmanagement">Product Management</a>
+    <a href="/admin/categorymanagement">Category Management</a>
+    <a href="/admin/ordermanagement">Order Management</a>
+    <a href="/admin/sales-report">Reports</a>
+    <a href="/admin/couponsmanagement">Coupons</a>
+  </div>
+
+  <div class="main-content">
+    <h2 style="margin-left: 30%;">Admin Dashboard</h2>
+
+    <div class="dashboard-container">
+      <!-- Filter Options
+      <div class="filter-container">
+        <select id="filterType" name="filterType">
+          <option value="yearly">Yearly</option>
+          <option value="monthly">Monthly</option>
+          <option value="weekly">Weekly</option>
+        </select>
+        <button id="filterBtn">Filter Data</button>
+      </div> -->
+      <div class="controll">
+      <div class="top-details">
+      <div class="col-md-4 col-xl-3">
+        <div class="card bg-c-green order-card" style="height: 173px;">
+            <div class="card-block">
+                <h6 class="m-b-20">Orders Received</h6>
+                <% salesDataYearly.forEach(sale => { %>
+                    <li class="sales-item">
+                        <div class="sales-info">
+                            <span class="sales-date"><%= sale._id %></span>
+                            <span class="sales-amount">Total Sales: ₹<%= sale.totalSales %></span>
+                        </div>
+                    </li>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xl-3">
+      <div class="card bg-c-yellow order-card"  style="height: 173px;">
+          <div class="card-block">
+              <h6 class="m-b-20">Orders Received</h6>
+              <% paymentMethods.forEach(payment => { %>
+                <div class="payment-item">
+          
+                    <span class="payment-amount"><%= payment._id %>:₹<%= payment.totalAmount %></span>
+                </div>
+            <% }); %>
+          </div>
+      </div>
+  </div>
+
+  <div class="col-md-4 col-xl-3">
+    <div class="card bg-c-pink order-card" style="height: 173px;">
+        <div class="card-block">            
+            <h6 class="m-b-20">Orders Received</h6>
+            <!-- <h2 class="text-right"><i class="fa fa-rocket f-left"></i><span>486</span></h2> -->
+           
+            <span class="sales-amount">Total Order:  <%= totalQuantitySold %></span>
+        
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<!-- ---------------------------------------------------------------------------------------------------------------------------- -->
+      <!-- Sales Data -->
+     <div class="salesData card">
+    <h2 class="card-header">Sales Data</h2>
+    <ul id="salesList" class="sales-list">
+        <% salesDataYearly.forEach(sale => { %>
+            <li class="sales-item">
+                <div class="sales-info">
+                    <span class="sales-date"><%= sale._id %></span>
+                    <span class="sales-amount">Total Sales: ₹<%= sale.totalSales %></span>
+                </div>
+            </li>
+        <% }); %>
+    </ul>
+    <div class="chart-container">
+        <canvas id="salesChart"></canvas>
+    </div>
+</div>
+
+
+      <!-- Top Products -->
+      <div class="topProducts card">
+        <h2 class="card-header">Top 10 Products</h2>
+        <div id="productsList" class="products-list">
+          <!-- <div class="col-md-4 col-xl-3"> -->
+            <div class="card bg-c-pink order-card" >
+                <div class="card-block">
+                    <h6 class="m-b-20">Orders Received</h6>
+                    <% topProducts.forEach(product => { %>
+                        <div class="product-item">
+                            <strong><%= product.name %></strong>
+                            <span class="quantity-sold">Quantity Sold: <%= product.totalQuantitySold %></span>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="chart-container">
+            <canvas id="productsChart"></canvas>
+        </div>
+    </div>
+    
+      <!-- Payment Methods -->
+      <div class="paymentMethods card">
+        <h2 class="card-header">Payment Methods</h2>
+        <div id="paymentsList" class="payments-list">
+            <% paymentMethods.forEach(payment => { %>
+                <div class="payment-item">
+                    <span class="payment-method"><%= payment._id %></span>
+                    <span class="payment-amount">Total Amount: $<%= payment.totalAmount %></span>
+                </div>
+            <% }); %>
+
+            
+        </div>
+        <div class="chart-container">
+            <canvas id="paymentChart"></canvas>
+        </div>
+    </div>
+    
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Sales Chart
+    const salesLabels = [<% salesDataYearly.forEach(sale => { %>'<%= sale._id %>', <% }); %>];
+    const salesData = [<% salesDataYearly.forEach(sale => { %><%= sale.totalSales %>, <% }); %>];
+    const salesCtx = document.getElementById('salesChart').getContext('2d');
+    new Chart(salesCtx, {
+        type: 'bar',
+        data: {
+            labels: salesLabels,
+            datasets: [{
+                label: 'Total Sales',
+                data: salesData,
+                backgroundColor: [
+      'rgba(255, 99, 132, 0.2)',
+      'rgba(255, 159, 64, 0.2)',
+      'rgba(255, 205, 86, 0.2)',
+      'rgba(75, 192, 192, 0.2)',
+      'rgba(54, 162, 235, 0.2)',
+      'rgba(153, 102, 255, 0.2)',
+      'rgba(201, 203, 207, 0.2)'
+    ],
+    borderColor: [
+      'rgb(255, 99, 132)',
+      'rgb(255, 159, 64)',
+      'rgb(255, 205, 86)',
+      'rgb(75, 192, 192)',
+      'rgb(54, 162, 235)',
+      'rgb(153, 102, 255)',
+      'rgb(201, 203, 207)'
+    ],
+    borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    // Top Products Chart
+    document.addEventListener('DOMContentLoaded', function() {
+      const topProducts = <%- JSON.stringify(topProducts) %>;
+      const productLabels = topProducts.map(product => product.name);
+      const productData = topProducts.map(product => product.totalQuantitySold);
+      const productsCtx = document.getElementById('productsChart').getContext('2d');
+      new Chart(productsCtx, {
+        type: 'bar',
+        data: {
+          labels: productLabels,
+          datasets: [{
+            label: 'Quantity Sold',
+            data: productData,
+            backgroundColor: [
+      'rgba(255, 99, 132, 0.2)',
+      'rgba(255, 159, 64, 0.2)',
+      'rgba(255, 205, 86, 0.2)',
+      'rgba(75, 192, 192, 0.2)',
+      'rgba(54, 162, 235, 0.2)',
+      'rgba(153, 102, 255, 0.2)',
+      'rgba(201, 203, 207, 0.2)'
+    ],
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    });
+
+    // Payment Methods Chart
+    document.addEventListener('DOMContentLoaded', function() {
+      const paymentMethods = <%- JSON.stringify(paymentMethods) %>;
+      const paymentLabels = paymentMethods.map(payment => payment._id);
+      const paymentData = paymentMethods.map(payment => payment.totalAmount);
+      const paymentCtx = document.getElementById('paymentChart').getContext('2d');
+      new Chart(paymentCtx, {
+        type: 'pie',
+        data: {
+          labels: paymentLabels,
+          datasets: [{
+            label: 'Total Amount per Payment Method',
+            data: paymentData,
+            backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(75, 192, 192)',
+      'rgb(255, 205, 86)',
+      'rgb(201, 203, 207)',
+      'rgb(54, 162, 235)'
+    ]
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

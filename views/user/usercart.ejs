@@ -1,0 +1,276 @@
+<%- include('header') %>
+<style>
+    body {
+        margin-top: 20px;
+        background-color: #f8f8f8;
+    }
+
+    .avatar-lg {
+        height: 5rem;
+        width: 5rem;
+    }
+
+    .font-size-18 {
+        font-size: 18px !important;
+    }
+
+    .text-truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    a {
+        text-decoration: none !important;
+    }
+
+    .w-xl {
+        min-width: 160px;
+    }
+
+    .card {
+        margin-bottom: 24px;
+        -webkit-box-shadow: 0 2px 3px #e4e8f0;
+        box-shadow: 0 2px 3px #e4e8f0;
+    }
+
+    .card {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid #eff0f2;
+        border-radius: 1rem;
+    }
+
+    #alert-insufficient-stock {
+        position: absolute;
+        width: 55%;
+        top: 170px; /* Adjust this based on the exact position you need */
+        z-index: 1000; /* Ensure it overlays other elements */
+    }
+    
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css"
+        integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztCQTtwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="font-size-16 mb-1" style="margin-top: 40px;">Shopping bag</h2>
+        
+        <div id="alert-insufficient-stock" class="alert alert-warning alert-dismissible fade show" role="alert" style="display: none;">
+            <strong>Warning!</strong> Stock insufficient for the desired quantity.
+            <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
+        </div>
+            
+        <div class="row" style="padding-top: 70px;">
+
+            <div class="col-xl-8">
+                <% if (userCart && userCart.items.length > 0) { %>
+                <% userCart.items.forEach(item => { %>
+                <div class="card border shadow-none mb-3">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start border-bottom pb-2">
+                            <div class="me-4">
+                                <img src="/uploads/<%= item.Product.image[0] %>" alt="" class="avatar-lg rounded">
+                            </div>
+                            <div class="flex-grow-1 align-self-center overflow-hidden">
+                                <div>
+                                    <h5 class="text-truncate font-size-18">
+                                        <a href="#" class="text-dark"><%= item.Product.ProductName %></a>
+                                    </h5>
+                                    <p class="text-muted mb-0">
+                                        <i class="bx bxs-star text-warning"></i>
+                                        <i class="bx bxs-star text-warning"></i>
+                                        <i class="bx bxs-star text-warning"></i>
+                                        <i class="bx bxs-star text-warning"></i>
+                                        <i class="bx bxs-star-half text-warning"></i>
+                                    </p>
+                                    <p class="mb-0 mt-1">Color: <span class="fw-medium">Gray</span></p>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0 ms-2">
+                                <ul class="list-inline mb-0 font-size-16">
+                                    <li class="list-inline-item">
+                                        <a href="/deleteCart/<%=item.Product._id%>" class="text-muted px-1">
+                                            <i class="mdi mdi-trash-can-outline"></i>
+                                        </a>
+                                    </li>
+                                    <!-- <li class="list-inline-item">
+                                        <a href="#" class="text-muted px-1">
+                                            <i class="mdi mdi-heart-outline"></i>
+                                        </a>
+                                    </li> -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mt-3">
+                                        <p class="text-muted mb-2">Price</p>
+                                        <h5 class="mb-0 mt-2">₹<%= item.price %></h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="mt-3">
+                                        <p class="text-muted mb-2">Quantity</p>
+                                        <div class="d-inline-flex align-items-center">
+                                            <button class="btn btn-sm btn-outline-secondary" type="button" onclick="changeQuantity('<%= item.Product._id %>', -1, <%= item.price %>)">-</button>
+
+                                            <input type="text" class="form-control form-control-sm text-center mx-2" value="<%= item.quantity %>" id="quantity-<%= item.Product._id %>" readonly>
+                                            <button class="btn btn-sm btn-outline-secondary" type="button" onclick="changeQuantity('<%= item.Product._id %>', +1, <%= item.price %>)">+</button>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mt-3">
+                                        <p class="text-muted mb-2">Total</p>
+                                        <h5 id="total-<%= item.Product._id %>">₹<%= (item.price * item.quantity).toFixed(2) %></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+
+            </div>
+            <!-- end col-xl-8 -->
+
+            <div class="col-xl-4">
+                <div class="mt-5 mt-lg-0">
+                    <div class="card border shadow-none">
+                        <div class="card-header bg-transparent border-bottom py-3 px-4">
+                            <h5 class="font-size-16 mb-0">Order Summary</h5>
+                        </div>
+                        <div class="card-body p-4 pt-2">
+                            <div class="table-responsive">
+                                <table class="table mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <td>Sub Total :</td>
+                                            <td class="text-end" id="subtotal"><%= userCart.totalPrice.toFixed(2) %></td>
+                                        </tr>
+                                        <tr class="bg-light">
+                                            <th>Total :</th>
+                                            <td class="text-end" id="total">
+                                                <span class="fw-bold"><%= userCart.totalPrice.toFixed(2) %></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end table-responsive -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col-xl-4 -->
+
+        </div>
+        <!-- end row -->
+
+        <div class="row my-4">
+            <div class="col-sm-6">
+                <a href="#" class="btn btn-link text-muted">
+                    <i class="mdi mdi-arrow-left me-1"></i> Continue Shopping
+                </a>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end mt-2 mt-sm-0">
+                    <a href="/usercheckout" class="btn btn-success">
+                        <i class="mdi mdi-cart-outline me-1"></i> Checkout
+                    </a>
+                </div>
+            </div>
+        </div>
+        <% } else { %>
+        <h2 class="text-muted" style="padding-left: 491px; padding-bottom: 144px;">Your cart is empty.....!</h2>
+        <% } %>
+    </div>
+
+    <%- include('footer') %>
+    <script>
+
+        async function changeQuantity(productId, change, price) {
+            const quantityInput = document.getElementById(`quantity-${productId}`);
+            const totalElement = document.getElementById(`total-${productId}`);
+            const subtotalElement = document.getElementById('subtotal');
+            const totalOrderElement = document.getElementById('total');
+            const alertInsufficientStock = document.getElementById('alert-insufficient-stock');
+
+            alertInsufficientStock.style.display = 'none'
+
+            console.log('Quantity Input:', quantityInput);
+            console.log('Total Element:', totalElement);
+            console.log('Subtotal Element:', subtotalElement);
+            console.log('Total Order Element:', totalOrderElement);
+            
+            let currentQuantity = parseInt(quantityInput.value);
+            let newQuantity = currentQuantity + change;
+            
+            console.log('Current Quantity:', currentQuantity);
+            console.log('New Quantity:', newQuantity);
+            
+            if (newQuantity < 1) newQuantity = 1;  // Prevent quantity less than 1
+    
+            try {
+                const response = await fetch(`/incDecPost/${productId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ newQuantity })
+                });
+    
+                if (response.ok) {
+                    const resData = await response.json();
+                    quantityInput.value = newQuantity;
+                    totalElement.innerText = (newQuantity * price).toFixed(2);
+    
+                    // Update the subtotal and total
+                    subtotalElement.innerText = resData.subtotal.toFixed(2);
+                    totalOrderElement.innerText = resData.totalPrice.toFixed(2);
+                } else {
+                    
+                    const errorData = await response.json();
+                   if (errorData.message === 'Quantity exceeds available stock') {
+                    alertInsufficientStock.style.display = 'block';
+                   } else {
+                    console.error('Failed to update quantity');
+                  }
+                    
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+    
+</body>
+
+</html>

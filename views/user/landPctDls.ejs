@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap">
+  <style>
+    /* Existing styles */
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .card-wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .card {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      border: 1px solid #e7e7e7;
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .img-display {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .img-display img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .img-select {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .img-select .img-item {
+      flex: none;
+    }
+
+    .img-select .img-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .img-select .img-item img:hover {
+      transform: scale(1.1);
+    }
+
+    .product-content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .product-title {
+      font-size: 1.5rem;
+      text-transform: capitalize;
+      color: #12263a;
+      margin: 1rem 0;
+    }
+
+    .product-price {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 1rem 0;
+    }
+
+    .product-detail h2 {
+      margin-top: 60px;
+      text-transform: capitalize;
+      color: #12263a;
+      margin-bottom: 0.6rem;
+    }
+
+    .product-detail p {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .purchase-info {
+      padding-top: 120px;
+      margin-top: 2rem;
+    }
+
+    .purchase-info .btn {
+      border: 1.5px solid #e7dede;
+      border-radius: 25px;
+      text-align: center;
+      padding: 0.45rem 0.8rem;
+      outline: 0;
+      margin-right: 0.5rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
+
+    .purchase-info .btn-primary {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    .purchase-info .btn-success {
+      background-color: #28a745;
+      color: #fff;
+    }
+
+    .purchase-info .btn:hover {
+      opacity: 0.9;
+    }
+
+    .error{
+      color : red
+    }
+
+    @media screen and (min-width: 992px) {
+      .card-wrapper .card {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 1.5rem;
+      }
+
+      .card-wrapper {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .product-content {
+        padding-top: 0;
+      }
+    }
+  </style>
+  <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <!-- Include jQuery Zoom plugin -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-zoom/1.7.21/jquery.zoom.min.js"></script>
+</head>
+<body>
+  <%- include('header') %>
+
+  <div class="card-wrapper">
+    <div class="card">
+      <!-- card left -->
+    <div class="img-display">
+  <span class="zoom" id="ex1">
+    <img id="main-image" src="<%= product.image && product.image.length > 0 ? `/uploads/${product.image[0]}` : '/uploads/default.jpg' %>" alt="product image">
+  </span>
+  <div class="img-select">
+    <% if (product.image && product.image.length > 0) { %>
+      <% product.image.forEach((image, index) => { %>
+        <div class="img-item">
+          <a href="#" data-id="<%= index %>">
+            <img src="/uploads/<%= image %>" alt="product image" class="thumbnail">
+          </a>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <p>No images available</p>
+    <% } %>
+  </div>
+</div>
+
+
+      <!-- card right -->
+      <div class="product-content">
+        <h1 class="product-title"><%= product.ProductName %></h1>
+        <div class="product-price">
+          <p class="price"><span>MRP:₹<%= product.price %></span></p>
+        </div>
+        <div class="product-detail">
+          <h2>About this item:</h2>
+          <p><%= product.description %></p>
+        </div>
+      
+
+        <div class="purchase-info" style="display: flex; gap: 10px;">
+          <form id="add-to-cart-form-<%= product._id %>" action="/addtocart/<%= product._id %>" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-primary">
+                  Add to Cart <i class="fas fa-shopping-cart"></i>
+              </button>
+          </form> 
+                   
+          <form action="/addwishlist/<%=product._id %>" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-danger">
+                  Add to Wishlist <i class="fas fa-heart"></i>
+              </button>
+          </form>
+      </div>
+
+      <p class="error"><%= message%></p>
+      
+     
+      </div>
+    </div>
+  </div>
+  //  <!-- Make sure to include Font Awesome in your project -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+      
+  <script>
+  
+    $(document).ready(function() {
+      $('#ex1').zoom({
+        magnify: 2 // Initial zoom level (default is 1)
+      });
+
+      const thumbnails = $('.thumbnail');
+      const mainImage = $('#main-image');
+      const zoomContainer = $('#ex1');
+
+      thumbnails.on('click', function(e) {
+        e.preventDefault();
+        const newSrc = $(this).attr('src');
+        mainImage.attr('src', newSrc);
+        zoomContainer.trigger('zoom.destroy'); 
+        zoomContainer.zoom({ magnify: 2 }); 
+      });
+    });
+</script>
+<%-include('footer') %>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<style>
+ /* @import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@200;300;400;500;600;700;800&display=swap"); */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');  
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+h1 {
+  font-size: 50px;
+  line-height: 64px;
+  color: #222;
+  font-family: "Spartan", sans-serif;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "League Spartan", sans-serif;
+}
+
+h2 {
+  font-size: 46px;
+  line-height: 54px;
+  color: #222;
+}
+
+h4 {
+  font-size: 20px;
+  color: #222;
+}
+
+h6 {
+  font-weight: 700;
+  font-size: 12px;
+}
+
+p {
+  font-size: 1rem;
+  color: #465b52;
+  margin: 15px 0 20px 0;
+}
+
+body {
+  width: 100%;
+}
+
+p {
+  font-size: 1rem;
+  color: #465b52;
+  margin: 15px 0 20px 0;
+}
+
+.section-p1 {
+  padding: 40px 80px;
+}
+
+.section-m1 {
+  margin: 40px 0;
+}
+
+button.normal {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 15px 30px;
+  color: #000;
+  background-color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: 0.2s;
+}
+
+/* header start */
+
+#header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  padding: 33px 102px;
+  background: #f0f1f5;
+  box-shadow: 0 5px 15px rgba(228, 228, 228, 0.6);
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  margin: 0 20px; /* Adds spacing between the search bar and the other elements */
+}
+
+.search-container form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px; /* Adjust max-width to better fit */
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.search-container input[type="text"] {
+  padding: 6px 31px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+.search-container button {
+  padding: 10px 20px;
+  background: #088178;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.search-container button:hover {
+  background: #06665b;
+}
+.head {
+    border-radius: 37px;
+    margin-right: 25px;
+    margin-left: -53px;
+    display: block; /* or inline-block */
+}
+
+.baby{
+  margin-top: 12px;
+  margin-left: -17px;
+}
+#navbar {
+  display: flex;
+  align-items: center;
+}
+
+#navbar li {
+  list-style: none;
+  padding: 0 20px;
+}
+
+#navbar li a {
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  transition: 0.3s ease;
+}
+
+
+
+  
+    </style>
+    <!DOCTYPE html>
+    <html lang="en">
+    
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="shortcut icon" href="images/WhatsApp Image 2024-10-09 at 11,49,58_9140ff4d-photoaidcom-cropped.jpg" type="image/x-icon">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+      <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@200;300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+      <link rel="stylesheet" href="./styles.css">
+    
+      <title>Baby'S World</title>
+    </head>
+    
+    <body>
+      <!-- header -->
+      <header id="header">
+        <!-- emplom for header -->
+        <!-- <div class="head"> <img src="images/WhatsApp Image 2024-10-09 at 11,49,58_9140ff4d-photoaidcom-cropped.jpg" height="35px" width="35px" alt=""></div> -->
+
+        <h4 class="baby">Baby'S World</h4>
+    
+        <div class="search-container">
+          <form action="/search" method="GET">
+            <input type="text" placeholder="Search..." name="query">
+            <button type="submit"><i class="fa fa-search"></i></button>
+          </form>
+        </div>
+    
+        <div>
+          <ul id="navbar">
+            <li><a class="active" href="/home">Home</a></li>
+            <li><a href="/userprofile">Profile</a></li>
+            <li><a href="/productlistPage">Product list</a></li>
+            <li><a href="/getwishlist">Whishlist</a></li>
+            <li><a href="/userlogout">Logout</a></li>
+            <li><a href="/usercart"><i class="fa fa-shopping-bag"></i></a></li>
+            <!-- <a href="#" id="close">
+              <i class="fa fa-times"></i>
+            </a> -->
+          </ul>
+        </div>
+        <!-- <div id="mobile">
+          <a href="cart.html"><i class="fa fa-shopping-bag"></i></a>
+          <i id="bar" class="fas fa-outdent"></i>
+        </div> -->
+      </header>
+    </body>
+    
+    </html>
+    

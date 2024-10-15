@@ -1,0 +1,302 @@
+<%-include('adminheader') %>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="/css/crop.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css'>
+    
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+  
+      .card {
+        width: 1000px;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+  
+      .card-header {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+      }
+  
+      .image-preview {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 20px;
+      }
+  
+      .image-container {
+        position: relative;
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+  
+      .image-preview img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+  
+      .image-container .delete-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: rgba(255, 0, 0, 0.7);
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 12px;
+      }
+  
+      .navbar {
+        background-color: #5b4e4e;
+        margin-bottom: 0;
+      }
+  
+      .sidebar {
+        border-radius: 10px;
+        position: fixed;
+        left: 5px;
+        top: 70px;
+        height: calc(100% - 75px);
+        width: 250px;
+        background-color: #282626;
+        padding-top: 60px;
+        overflow-y: auto;
+      }
+  
+      .sidebar a {
+        padding: 10px 15px;
+        text-decoration: none;
+        font-size: 18px;
+        color: white;
+        display: block;
+      }
+  
+      .sidebar a:hover {
+        background-color: #e0cfcf;
+        color: #000;
+      }
+  
+      .container {
+        padding-top: 2px;
+        padding-left: 270px;
+        max-width: 1460px;
+        margin: 0 auto;
+      }
+  
+      h2 {
+        text-align: left;
+        margin-bottom: 20px;
+      }
+  
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+  
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #7f7f7f;
+      }
+  
+      th {
+        background-color: #5a5a5a;
+        color: white;
+      }
+  
+      .btn-sm {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+  
+      .btn-primary,
+      .btn-warning,
+      .btn-success {
+        padding: 8px 12px;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+  
+      .btn-primary:hover {
+        background-color: #0056b3;
+      }
+  
+      .btn-warning:hover {
+        background-color: #e0a800;
+      }
+  
+      .btn-success:hover {
+        background-color: #218838;
+      }
+  
+      .alert-dismissible .close {
+        padding: 0.75rem 1.25rem;
+        color: inherit;
+      }
+
+     
+   
+   </style>
+   
+  </head>
+<body>
+
+  <div class="sidebar">
+    <div class="admin" style="color: #adadad; margin-left: 50px;margin-bottom: 30px;">
+      <h5>Admin Panel</h5>
+    </div>
+    <a href="#">Dashboard</a>
+    <a href="/admin/usermanagement">User Management</a>
+    <a href="/admin/productmanagement">Product Management</a>
+    <a href="/admin/categorymanagement">Category Management</a>
+    <a href="/admin/ordermanagement">Order Management</a>
+    <a href="/admin/sales-report">Reports</a>
+    <a href="/admin/couponsmanagement">Coupons</a>
+  </div>
+
+  <div id="cropper110Modal">
+    <div id="imageCropBox">
+        <div style="text-align: end;">
+            <button class="cropper110-close">close</button>
+        </div>
+        <section class="cropper110-page">
+            <div class="cropper110-box">
+                <div class="cropper110-cropping-box"></div>
+            </div>
+
+            <div>
+                <button class="cropper110-crop mx-3">Crop</button>
+            </div>
+        </section>
+    </div>
+      </div>
+
+
+  <!-- Product Management Section -->
+  <div class="container mt-5">
+    <div class="row" style="margin-left: -154px;">
+      <div class="col-lg-8 offset-lg-2">
+        <!-- Add Product Form -->
+        <div class="card">
+          <div class="card-header bg-dark text-white text-center">
+            Add Product
+          </div>
+          <div class="card-body">
+            <form id="addProductForm" action="/admin/productpost" method="post" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="productname">Product Name</label>
+                <input type="text" class="form-control" name="ProductName" id="productname" placeholder="Enter Product Name">
+              </div>
+              <div class="form-group">
+                <label for="productprice">Price</label>
+                <input type="number" class="form-control" name="Mrp" id="productprice" placeholder="Enter Price">
+              </div>
+              <div class="form-group">
+                <label for="productstock">Stock</label>
+                <input type="number" class="form-control" name="stock" id="productstock" placeholder="Enter Stock">
+              </div>
+              <div class="form-group">
+                <label for="productdescription">Description</label>
+                <textarea class="form-control" name="description" id="productdescription" placeholder="Enter Description"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="productCategory">Select Category</label>
+                <select class="form-control" name="category" id="productCategory">
+                    <!-- Options should be dynamically populated -->
+    <!--         <% category.forEach(category => { %> -->
+                 <option value="<%= category._id %>"><%= category.name %></option>
+                   <!-- <% }) %> -->
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="fileUploader" class="mt-2" style="display: flex; align-items: center;">Images &emsp;<span class="text-danger"><%= typeof mes != 'undefined' ? mes : "" %></span></label>
+                <input type="file" id="fileUploader" class="form-control form-control-md mt-2" data-image-preview="#imagePreview"  name="image" value="" accept=".jpg,.png,.jpeg" multiple >
+                <div id="imagePreview" class="mt-2"></div>
+              <button type="submit" class="btn btn-success btn-block mt-4">Add Product</button>
+            </form>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js'></script>
+  <script src="/script/crop.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    function validateForm(formId, fields) {
+      var form = document.getElementById(formId);
+      form.addEventListener('submit', function(event) {
+        var isValid = true;
+        fields.forEach(function(field) {
+          var value = document.getElementById(field.id).value.trim();
+          if (value === '' || (field.min && parseInt(value, 10) < field.min)) {
+            isValid = false;
+          }
+        });
+  
+        if (!isValid) {
+          event.preventDefault(); // Prevent form submission
+  
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please fill out all required fields correctly.',
+          });
+        } else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Category added successfully!',
+          showConfirmButton: false,
+          timer: 1500
+        }).then(() => {
+          document.getElementById('addCategoryForm').submit();
+        });
+      }
+      });
+    }
+  
+    validateForm('addProductForm', [
+      { id: 'productname' },
+      { id: 'productprice' },
+      { id: 'productstock', min: 1 },
+      { id: 'productdescription' },
+      { id: 'productCategory' },
+      { id: 'fileUploader' }
+    ]);
+  
+    validateForm('userManagementForm', [
+      { id: 'username' },
+      { id: 'email' },
+      { id: 'password' }
+    ]);
+  </script>
+  
+  
+
+</body>
+</html>

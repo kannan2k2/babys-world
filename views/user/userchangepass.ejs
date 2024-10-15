@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Password</title>
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .change-password-modal {
+            display: flex;
+            flex-direction: column;
+            padding: 25px;
+            margin: 20px;
+            border-radius: 2px;
+            border: 1px solid #ccc;
+        }
+        .modal-header {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 50px;
+            color: #3C414F;
+        }
+        .modal-body {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 50px;
+        }
+        .modal-form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+        }
+        .modal-form-group label {
+            color: #3C414F;
+            font-weight: 600;
+        }
+        .modal-form-group input {
+            font-size: 16px;
+            padding: 10px 0px;
+            margin-top: 10px;
+            border: none;
+            border-bottom: 1px solid #AAA;
+            outline: none;
+        }
+        .modal-form-group .modal-hlp-txt {
+            font-size: 14px;
+        }
+        .modal-form, .password-guidelines {
+            width: 45%;
+        }
+        .password-guidelines {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .guidelines-header {
+            color: #3C414F;
+            font-size: 20px;
+            font-weight: 600;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ccc;
+        }
+        .guidelines-sub-header {
+            color: #3C414F;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 15px 0px;
+        }
+        .guidelines-description p {
+            color: #7a7676;
+            margin-bottom: 5px;
+        }
+        .guidelines-description p:last-child {
+            margin-bottom: 0px;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+        }
+        .modal-btn {
+            min-width: 100px;
+            font-size: 17px;
+            padding: 8px;
+            background: #fff;
+            border: 1px solid purple;
+            border-radius: 2px;
+            outline: none;
+        }
+        .modal-btn.primary-btn {
+            color: purple;
+        }
+        .modal-btn.secondary-btn {
+            color: #fff;
+            background: purple;
+        }
+        .modal-btn:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="change-password-modal" style="margin-top: 70px;">
+        <h2 class="modal-header">Change Password</h2>
+        <section class="modal-body">
+            <form class="modal-form" action="/userChangePassPost" method="post">
+                <div class="modal-form-group">
+                    <label for="password">Old Password </label>
+                    <input type="text" name="oldPassword" placeholder="Enter Old Password" id="password">
+                </div>
+                <div class="modal-form-group">
+                    <label for="password">New Password </label>
+                    <input type="text" name="newPassword" placeholder="Enter New Password" id="password">
+                </div>
+                <div class="modal-form-group">
+                    <label for="confirm-password">Confirm Password </label>
+                    <input type="password" name="confirmPassword" placeholder="Confirm Your Password" id="confirm-password">
+                </div>
+                <button class="modal-btn secondary-btn">Save Changes</button>
+                <button class="modal-btn primary-btn">Close</button>
+            </form>
+            <div class="password-guidelines">
+                <h3 class="guidelines-header">Password Guidelines</h3>
+                <h4 class="guidelines-sub-header">Eg: MY@password123</h4>
+                <div class="guidelines-description">
+                    <p>Must be 6 - 15 characters</p>
+                    <p>Must include at least one uppercase letter</p>
+                    <p>Must include at least one number</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', async (event) => {
+            const newPassword = form.querySelector('input[name="newPassword"]').value;
+            const confirmPassword = form.querySelector('input[name="confirmPassword"]').value;
+
+            if (newPassword !== confirmPassword) {
+                event.preventDefault(); // Prevent form from submitting
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'New password and confirm password do not match!',
+                });
+            }
+        });
+    });
+    </script>
+
+
+</body>
+</html>

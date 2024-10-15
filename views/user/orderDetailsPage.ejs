@@ -1,0 +1,173 @@
+<%- include('header') %>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', Arial, sans-serif;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-color: #f7f8fc;
+    }
+
+    main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        padding: 40px;
+        background-color: #ffffff;
+        box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        transition: box-shadow 0.3s ease;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 24px;
+        color: #444;
+    }
+
+    .order-info, .product-info, .address-info, .summary-info {
+        margin-bottom: 25px;
+        padding: 20px;
+        background-color: #f9fafc;
+        border-radius: 8px;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .order-info p, .product-info p, .address-info p, .summary-info p {
+        margin-bottom: 12px;
+        color: #555;
+        font-size: 14px;
+    }
+
+    .order-info {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px;
+        background-color: #f0f1f7;
+        border: 1px solid #e6e7eb;
+    }
+
+    .order-info div {
+        flex: 1;
+        text-align: center;
+    }
+
+    .product-info {
+        display: flex;
+        align-items: center;
+        border: 1px solid #e6e7eb;
+    }
+
+    .product-info img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-right: 25px;
+    }
+
+    .product-info div {
+        flex: 1;
+    }
+
+    .summary-info p {
+        text-align: right;
+        font-size: 1.2em;
+        color: #333;
+    }
+
+    .grand-total {
+        font-weight: 700;
+        font-size: 1.5em;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+
+        .order-info, .product-info, .address-info, .summary-info {
+            padding: 10px;
+        }
+
+        .product-info img {
+            width: 80px;
+            height: 80px;
+        }
+    }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Information</title>
+</head>
+<body>
+
+    <!-- Header -->
+    <main>
+        <div class="container">
+            <h2>Order Information</h2>
+            
+            <div class="order-info">
+                <div>
+                    <p><strong>Order Date</strong></p>
+                    <p><%= new Date(order.createdAt).toLocaleDateString() %></p>
+                </div>
+                <div>
+                    <p><strong>Order ID</strong></p>
+                    <p>#<%= order._id.toString().slice(-7).toUpperCase() %></p>
+                </div>
+                <div>
+                    <p><strong>Total Amount</strong></p>
+                    <p>₹ <%= order.totalAmount %></p>
+                </div>
+            </div>
+
+            <div class="product-info">
+                <img src="/uploads/<%= item.image[0] %>" alt="Product Image">
+                <div>
+                    <p><strong><%= item.ProductName %></strong></p>
+                    <p><%= item.description %></p>
+                    <p>Quantity: x<%= order.products[0].quantity %></p>
+                    <p>Order Status:<%= order.products[0].orderStatus %></p>
+                    <p>Descound Percent:%<%= order.discountPercent %></p>
+                    <p>Price: ₹ <%= item.price %></p>
+                </div>
+            </div>
+
+            <div class="address-info">
+                <p><strong>Delivery Address</strong></p>
+                <p>
+                    <%= order.address.name %><br>
+                    <%= order.address.address %>, <%= order.address.city %>, <%= order.address.state %> - <%= order.address.zip %><br>
+                    Phone: <%= order.address.phone %>
+                </p>
+            </div>
+
+            <div class="summary-info">
+                <p class="grand-total">Grand Total: ₹ <%= order.totalAmount %></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <%- include('footer') %>
+</body>
+</html>

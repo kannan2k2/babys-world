@@ -1,0 +1,318 @@
+<%-include('adminheader') %>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Management</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+    }
+
+    .navbar {
+      background-color: #5b4e4e;
+      margin-bottom: 0;
+    }
+
+    .sidebar {
+      border-radius: 10px;
+      position: fixed;
+      left: 5px;
+      top: 70px;
+      height: calc(100% - 75px);
+      width: 250px;
+      background-color: #282626;
+      padding-top: 60px;
+      overflow-y: auto;
+    }
+    .sidebar a {
+      padding: 10px 15px;
+      text-decoration: none;
+      font-size: 18px;
+      color: white;
+      display: block;
+    }
+
+    .sidebar a:hover {
+      background-color: #e0cfcf;
+      color: #000;
+    }
+
+    .container {
+      padding-top: 2px;
+      padding-left: 270px;
+      max-width: 1460px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #7f7f7f;
+    }
+
+    th {
+      background-color: #5a5a5a;
+      color: white;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    .btn-primary, .btn-warning, .btn-success {
+      padding: 8px 12px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-warning:hover {
+      background-color: #e0a800;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+    }
+
+    .alert-dismissible .close {
+      padding: 0.75rem 1.25rem;
+      color: inherit;
+    }
+    /* --------------------------------------------------------------------- */
+ .details-btn {
+      background-color: #4CAF50;
+      color: white;
+      
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      border: none;
+      cursor: pointer;
+  }
+
+  .details-btn:hover {
+      background-color: #45a049;
+  }
+
+  /* Styling for the Order Status dropdown */
+  .status-dropdown {
+    width: 132px;
+    height: 35px;
+    padding: 7px 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    color: #333;
+    transition: border-color 0.3s ease;
+  }
+
+  .status-dropdown:disabled {
+      background-color: #ddd;
+      cursor: not-allowed;
+  }
+
+  .status-dropdown option {
+      font-weight: normal;
+      color: #333;
+  }
+
+  .status-dropdown option[selected] {
+      font-weight: bold;
+      color: #000;
+  }
+
+  </style>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="admin" style="color: #adadad; margin-left: 50px;margin-bottom: 30px;"><h5>Admin Panel</h5></div>
+    <a href="/admin/Dashboard">Dashboard</a>
+    <a href="/admin/usermanagement">User Management</a>
+    <a href="/admin/productmanagement">Product Management</a>
+    <a href="/admin/categorymanagement">Category Management</a>
+    <a href="/admin/ordermanagement">Order Management</a>
+    <a href="/admin/sales-report">Reports</a>
+    <a href="/admin/couponsmanagement">Coupons</a>
+  </div>
+
+  <!-- Page Content -->
+  <div class="container mt-5">
+    <h2>Order Management</h2>
+
+    <table id="ordersTable" class="table table-striped table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Index</th>
+          <th scope="col">Order ID</th>
+          <th scope="col">Customer Name</th>
+          <th scope="col">Product</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Order Method</th>
+          <th scope="col">Order Status</th>
+          <th scope="col">Order Details</th>
+        </tr>
+      </thead>
+      <style>
+        /* Styling for the Order Details button */
+        .details-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+      
+        .details-btn:hover {
+            background-color: #45a049;
+        }
+      
+        /* Styling for the Order Status dropdown */
+        .status-dropdown {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            color: #333;
+            transition: border-color 0.3s ease;
+        }
+      
+        .status-dropdown:disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+      
+        .status-dropdown option {
+            font-weight: normal;
+            color: #333;
+        }
+      
+        .status-dropdown option[selected] {
+            font-weight: bold;
+            color: #000;
+        }
+      </style>
+      
+      <tbody>
+        <% let uniqueIndex = 1; %> 
+        <% orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); %> 
+        <% orders.forEach(function(order, index) { %>
+          <% if (order.products && order.products.length > 0) { %> 
+            <% order.products.forEach(function(item) { %>
+            <tr>
+              <td><%= uniqueIndex++ %></td>
+              <td><%= order.id %></td>
+              <td><%= order.user.firstname %></td>
+              <td><%= item.product.ProductName %></td>
+              <td><%= item.quantity %></td>
+              <td><%= order.paymentInfo.method %></td>
+              <td>
+                <select 
+                  name="itemStatus" 
+                  id="itemStatus" 
+                  class="status-dropdown" 
+                  data-item-id="<%= item._id %>" 
+                  data-order-id="<%= order._id %>"
+                  <%= item.orderStatus === 'Cancelled' ? 'disabled' : '' %>
+                  style="<%= item.orderStatus === 'Cancelled' ? 'font-weight: bold; color: black;' : '' %>"
+                  onchange="updateItemStatus(this)"
+                >
+                  <option value="Pending" <%= item.orderStatus === 'Pending' ? 'selected' : '' %>>Pending</option>
+                  <option value="Shipped" <%= item.orderStatus === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                  <option value="Delivered" <%= item.orderStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                  <option value="Cancelled" <%= item.orderStatus === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                </select>
+              </td>
+              <td>
+                <a href="/admin/OrderDetailsPage/<%= item.product._id %>/<%=order._id%>" class="details-btn" style="padding: 5px 22px">Details</a>
+              </td>
+            </tr>
+            <% }); %>
+          <% } else { %>
+            <tr>
+              <td><%= uniqueIndex++ %></td>
+              <td><%= order.id %></td>
+              <td><%= order.user.firstname %></td>
+              <td colspan="2">No items in this order</td>
+              <td><%= order.status %></td>
+              <td><%= order.details %></td>
+            </tr>
+          <% } %>
+        <% }); %>
+      </tbody>
+      
+    </table>
+  </div>
+
+  <!-- Bootstrap Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+  <script>
+    function updateItemStatus(selectElement) {
+        const itemId = selectElement.getAttribute('data-item-id');
+        const orderId = selectElement.getAttribute('data-order-id');
+        const newStatus = selectElement.value;
+        console.log(itemId);
+        console.log(orderId);
+        console.log(newStatus);
+
+        // Assuming you have an API endpoint for updating the item status
+        fetch(`/admin/updatestatus/${orderId}/${itemId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ newStatus }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Item status updated successfully:', data);
+            // You can add additional logic here if needed
+        })
+        .catch(error => {
+            console.error('Error updating item status:', error);
+            // Handle errors here
+        });
+    }
+</script>
+  <script>
+    $(document).ready(function() {
+      $('#ordersTable').DataTable();
+    });
+  </script>
+</body>
+
+</html>

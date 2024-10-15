@@ -1,0 +1,357 @@
+<%-include('adminheader') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Product</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <style>
+    .image-container {
+      display: inline-block;
+      position: relative;
+      margin: 10px;
+    }
+    .image-container img {
+      max-width: 100px;
+      max-height: 100px;
+    }
+    .image-container .delete-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    /* ------------------------------------------------------------- */
+
+    .navbar {
+        background-color: #5b4e4e;
+        margin-bottom: 0;
+      }
+  
+      .sidebar {
+        border-radius: 10px;
+        position: fixed;
+        left: 5px;
+        top: 70px;
+        height: calc(100% - 75px);
+        width: 250px;
+        background-color: #282626;
+        padding-top: 60px;
+        overflow-y: auto;
+      }
+  
+      .sidebar a {
+        padding: 10px 15px;
+        text-decoration: none;
+        font-size: 18px;
+        color: white;
+        display: block;
+      }
+  
+      .sidebar a:hover {
+        background-color: #e0cfcf;
+        color: #000;
+      }
+  
+      .container {
+        padding-top: 2px;
+        padding-left: 270px;
+        max-width: 1460px;
+        margin: 0 auto;
+      }
+  
+      h2 {
+        text-align: left;
+        margin-bottom: 20px;
+      }
+  
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+  
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #7f7f7f;
+      }
+  
+      th {
+        background-color: #5a5a5a;
+        color: white;
+      }
+  
+      .btn-sm {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+  
+    #cropper110Modal {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      margin: 20% 18%;
+      background-color: rgba(53, 52, 52, 0.532);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display: none;
+    }
+
+   
+  
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="admin" style="color: #adadad; margin-left: 50px; margin-bottom: 30px;">
+      <h5>Admin Panel</h5>
+    </div>
+    <a href="#">Dashboard</a>
+    <a href="/admin/usermanagement">User Management</a>
+    <a href="/admin/productmanagement">Product Management</a>
+    <a href="/admin/categorymanagement">Category Management</a>
+    <a href="/admin/ordermanagement">Order Management</a>
+    <a href="/admin/sales-report">Reports</a>
+    <a href="/admin/couponsmanagement">Coupons</a>
+  </div>
+
+  <!-- Navigation Bar -->
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Admin Panel</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">User Management</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Product Management <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Category Management</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav> -->
+
+  <!-- Product Management Section -->
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <!-- Edit Product Form -->
+        <div class="card">
+          <div class="card-header bg-dark text-white">
+            Edit Product 
+          </div>
+          <div class="card-body">
+            <form id="editProductForm" action="/admin/editproductpost" method="post" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="productID">Product Name</label>
+                <input type="text" class="form-control" name="ProductName" id="productname" placeholder="Enter Product Name" value="<%= product.ProductName %>">
+              </div>
+              <div class="form-group">
+                <label for="productPrice">Price</label>
+                <input type="number" class="form-control" name="Mrp" id="productprice" placeholder="Enter Price" value="<%= product.Mrp %>" min="1">
+              </div>   
+              <div class="form-group">
+                <label for="productOfferPrice">Product Offer Price</label>
+                <input type="number" class="form-control" name="price" id="productOfferprice" placeholder="Enter Price" value="<%= product.price %>" min="1" max="<%= product.Mrp %>">
+              </div>          
+              <div class="form-group">
+                <label for="productStock">Stock</label>
+                <input type="number" class="form-control" name="stock" id="productstock" placeholder="Enter Stock" value="<%= product.stock %>" min="1">
+              </div>
+              <div class="form-group">
+                <label for="productStock">Description</label>
+                <textarea type="text" class="form-control" name="description" id="productdescription" placeholder="Enter Description"><%= product.description %></textarea>
+              </div>
+              <div class="form-group">
+                <label for="productCategory">Category</label>
+                <select class="form-control" name="category" id="productCategory">
+                  <% category.forEach(item => { %>
+                    <% if (String(item._id) === String(product.category._id)) { %>
+                      <option value="<%= item._id %>" selected><%= item.name %></option>
+                    <% } else { %>
+                      <option value="<%= item._id %>"><%= item.name %></option>
+                    <% } %>
+                  <% }); %>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="productImage">Image</label>
+                <input type="file" class="form-control" name="image" id="productImage" data-image-preview="#imagePreview" multiple onchange="previewImages()">
+
+              </div>
+
+
+
+              <div class="imagePreview" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <% if (product.image && product.image.length > 0) { %>
+                  <% product.image.forEach((image, index) => { %>
+                    <div id="image-container-<%= index %>" style="display: flex; align-items: center;">
+                      <img src="/uploads/<%= image %>" alt="" style="width:100px; height: 100px;">
+                      <span onclick="deleteImg('<%= product._id %>', '<%= index %>')" style="cursor: pointer; margin-left: 5px;">X</span>
+                    </div>
+                  <% }) %>
+                <% } %>
+                <div id="imagePreview" style="width:100px; height: 100px;" ></div>
+              </div>
+            
+              
+              <button type="submit" class="btn btn-success btn-block">Save Changes</button>
+              <input type="hidden" name="_id" value="<%= product._id %>">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+  <script>
+
+async function deleteImg(productId, index) {
+    const res = await fetch(`/admin/delete-image/${productId}/${index}`, {
+        method: 'GET',
+    });
+console.log(res.ok)
+    if (res.ok) {
+      //  console.log('ppppp')
+       window.location.reload()
+    } else {
+        alert('Failed to delete the image');
+    }
+}
+
+    // function deleteImg(imageName, index) {
+    // const deleteImagesInput = document.getElementById('deleteImages');
+    // let deleteImagesArray = deleteImagesInput.value ? deleteImagesInput.value.split(',') : [];
+
+    // deleteImagesArray.push(imageName);
+    // deleteImagesInput.value = deleteImagesArray.join(',');
+
+    // Remove the image container from the DOM
+  //   document.getElementById(`image-container-${index}`).remove();
+  // }
+    function previewImages() {
+      var preview = document.getElementById('imagePreview');
+      var files = document.getElementById('productImage').files;
+      preview.innerHTML = '';
+
+      if (files) {
+        [].forEach.call(files, readAndPreview);
+      }
+
+      function readAndPreview(file) {
+        if (!/\.(jpe?g|png|gif)$/i.test(file.name)) {
+          return alert(file.name + " is not an image");
+        }
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          var container = document.createElement("div");
+          container.classList.add("image-container");
+
+          var img = document.createElement("img");
+          img.src = e.target.result;
+
+          var button = document.createElement("button");
+          button.classList.add("delete-btn");
+          button.innerHTML = "&times;";
+          button.onclick = function() {
+            container.remove();
+          };
+
+          container.appendChild(img);
+          container.appendChild(button);
+          preview.appendChild(container);
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+    document.getElementById('editProductForm').addEventListener('submit', function(event) {
+    var isValid = true; // Track overall validity
+
+    // Retrieve form values
+    var productName = document.getElementById('productname').value.trim();
+    var productPrice = document.getElementById('productprice').value.trim();
+    var productStock = document.getElementById('productstock').value.trim();
+    var productDescription = document.getElementById('productdescription').value.trim();
+    var productCategory = document.getElementById('productCategory').value.trim();
+    var selectedFiles = document.getElementById('productImage').files; // Assuming there's an input with id 'productImage'
+
+    // Check for empty fields
+    if (productName === '' || productPrice === '' || productStock === '' || productDescription === '' || productCategory === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: 'Please fill out all fields.'
+        });
+        isValid = false;
+    }
+
+    // Validate price
+    if (isNaN(productPrice) || parseFloat(productPrice) <= 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: 'Please enter a valid price.'
+        });
+        isValid = false;
+    }
+
+    // Validate stock
+    if (isNaN(productStock) || parseInt(productStock) < 1) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: 'Please enter a valid stock quantity.'
+        });
+        isValid = false;
+    }
+
+    // Validate image selection
+    // if (selectedFiles.length === 0) {
+    //     Swal.fire({
+    //         icon: 'error',
+    //         title: 'Validation Error',
+    //         text: 'Please select an image.'
+    //     });
+    //     isValid = false;
+    // }
+
+    // Prevent form submission if any validation fails
+    if (!isValid) {
+        event.preventDefault();
+    }
+});
+
+
+  </script>
+</body>
+</html>

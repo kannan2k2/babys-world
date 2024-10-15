@@ -1,0 +1,190 @@
+<%-include('adminheader') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+        }
+
+        .navbar {
+            background-color: #5b4e4e;
+            margin-bottom: 0;
+        }
+
+        .sidebar {
+      border-radius: 10px;
+      position: fixed;
+      left: 5px;
+      top: 70px;
+      height: calc(100% - 75px); /* Adjust height to fit within viewport accounting for top offset */
+      width: 250px;
+      background-color: #282626;
+      padding-top: 60px;
+      overflow-y: auto; /* Ensure content doesn't overflow */
+    }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #e0cfcf;
+            color: #000;
+        }
+
+        .container {
+            padding-top: 45px;
+            padding-left: 270px; /* Adjust padding to match sidebar width */
+            max-width: 1460px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #7f7f7f;
+        }
+
+        th {
+            background-color: #5a5a5a;
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-primary, .btn-warning, .btn-success {
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .space {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px; /* Adjust the gap as needed */
+        }
+
+        .btn-1, .btn-2 {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="admin" style="color: #adadad; margin-left: 50px;margin-bottom: 30px;" ><h5>Admin Panel</h5></div>
+   <a href="/admin/Dashboard">Dashboard</a>
+   <a href="/admin/usermanagement">User Management</a>
+   <a href="/admin/productmanagement">Product Management</a>
+   <a href="/admin/categorymanagement">Category Management</a>
+   <a href="/admin/ordermanagement">Order Management</a>
+   <a href="/admin/sales-report">Reports</a>
+   <a href="/admin/couponsmanagement">Coupens</a>
+ </div>
+
+
+  <!-- Product Management Section -->
+  <div class="container">
+    <h2 class="mb-4">Product Management</h2>
+    <div class="mb-3" style="text-align: right;">
+      <a href="/admin/addproduct" class="btn btn-dark">Add Product</a>
+    </div>
+    <table id="productTable" class="table table-striped table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Image</th>
+          <th scope="col">Product</th>
+          <th scope="col">Price</th>
+          <th scope="col">Description</th>
+          <th scope="col">Category</th>
+          <th scope="col">Offer</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Iterate through products -->
+        
+        <% products.slice().reverse().forEach((product) => { %>
+
+        <tr>
+          <td><img src="/uploads/<%= product.image[product.image.length-1] %>" alt="" style="width: 50px; height: 50px;"></td>
+          <td><%= product.ProductName %></td>
+          <td>₹<%= product.Mrp %></td>
+          <td><%= product.description %></td>
+          <td><%= product.category ? product.category.name : 'No Category' %></td>
+          <td><%= product.price %></td>
+          <td><%=product.stock %></td>
+          <td>
+            <div class="space">
+              <div class="btn-1">
+                <a href="/admin/editaddproduct/<%= product._id %>" class="btn btn-sm btn-primary">Edit</a>
+              </div>
+              <div class="btn-2">
+                <a href="/admin/softdeleteproduct/<%= product._id %>" class="btn btn-sm <%= product.isListed ? 'btn-warning' : 'btn-success' %>">
+                  <%= product.isListed ? 'Block' : 'Un-Block' %>
+                </a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- jQuery, DataTables, and Bootstrap Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#productTable').DataTable();
+    });
+  </script>
+</body>
+</html>

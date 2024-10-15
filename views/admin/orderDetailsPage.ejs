@@ -1,0 +1,339 @@
+<%-include('adminheader') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Information</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat|Open+Sans');
+        
+        * {
+            box-sizing: border-box;
+            font-family: 'Montserrat', Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.5;
+            width: 100%;
+            height: 100%;
+        }
+
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+        }
+
+        .head {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .emailTop {
+            font-size: 1.8em;
+            color: #444;
+        }
+
+        .topDate {
+            font-size: 1.1em;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .darkBack {
+            background-color: #f7f7f7;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .content1, .content2, .content3, .content4 {
+            display: inline-block;
+            text-align: center;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .content2, .content3, .content4 {
+            width: 30%;
+        }
+
+        .label1, .label2, .label3 {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .invoiceDate, .orderNum, .total {
+            font-size: 1.2em;
+            color: #222;
+        }
+
+        .product1 {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .item1 {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .name1 {
+            margin-left: 20px;
+            font-size: 1em;
+            color: #666;
+        }
+
+        .mainName1 {
+            font-weight: 600;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .itemDetails {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 20px;
+        }
+
+        .itemPrice1 {
+            margin-left: auto;
+            font-size: 1.2em;
+            color: #303030;
+        }
+
+        .priceDetails {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .priceLabel {
+            font-weight: 600;
+            color: #666;
+            margin-right: 10px;
+        }
+
+        .address {
+            font-size: 0.95em;
+            color: #555;
+        }
+
+        .grandTotal {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #222;
+            margin-top: 10px;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .content2, .content3, .content4 {
+                width: 100%;
+                text-align: left;
+                padding-left: 20px;
+                margin-bottom: 10px;
+            }
+
+            .product1 {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .itemPrice1 {
+                margin-top: 10px;
+            }
+
+            .item1 {
+                width: 100%;
+                height: auto;
+            }
+
+            .container {
+                padding: 15px;
+            }
+        }
+
+        /* -------------------------------------------------- */
+
+        
+    .navbar {
+        background-color: #5b4e4e;
+        margin-bottom: 0;
+      }
+  
+      .sidebar {
+        border-radius: 10px;
+        position: fixed;
+        left: 5px;
+        top: 70px;
+        height: calc(100% - 75px);
+        width: 250px;
+        background-color: #282626;
+        padding-top: 60px;
+        overflow-y: auto;
+      }
+  
+      .sidebar a {
+        padding: 10px 15px;
+        text-decoration: none;
+        font-size: 18px;
+        color: white;
+        display: block;
+      }
+  
+      .sidebar a:hover {
+        background-color: #e0cfcf;
+        color: #000;
+      }
+  
+      .container {
+        padding-top: 2px;
+        padding-left: 270px;
+        max-width: 1460px;
+        margin: 0 auto;
+      }
+  
+      h2 {
+        text-align: left;
+        margin-bottom: 20px;
+      }
+  
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+  
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #7f7f7f;
+      }
+  
+      th {
+        background-color: #5a5a5a;
+        color: white;
+      }
+  
+      .btn-sm {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+  
+    #cropper110Modal {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      margin: 20% 18%;
+      background-color: rgba(53, 52, 52, 0.532);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display: none;
+    }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="admin" style="color: #adadad; margin-left: 50px; margin-bottom: 30px;">
+          <h5>Admin Panel</h5>
+        </div>
+        <a href="#">Dashboard</a>
+        <a href="/admin/usermanagement">User Management</a>
+        <a href="/admin/productmanagement">Product Management</a>
+        <a href="/admin/categorymanagement">Category Management</a>
+        <a href="/admin/ordermanagement">Order Management</a>
+        <a href="/admin/sales-report">Reports</a>
+        <a href="/admin/couponsmanagement">Coupons</a>
+      </div>
+
+    <div class="container">
+        <div class="head">
+            <p class="emailTop">ORDER INFO</p>
+            <p class="topDate"><%= new Date(order.createdAt).toLocaleDateString() %></p>
+        </div>
+
+        <div class="darkBack">
+            <p class="thanks">
+                <%= order.user.firstname %> <%= order.user.lastname %><br>
+                <%= order.user.email %>
+            </p>
+        </div>
+
+        <div class="content2 darkBack">
+            <p class="label1">ORDERED DATE</p>
+            <p class="invoiceDate"><%= new Date(order.createdAt).toLocaleDateString() %></p>
+        </div>
+
+        <div class="content3 darkBack">
+            <p class="label2">ORDER ID</p>
+            <p class="orderNum">#<%= order._id.toString().slice(-7).toUpperCase() %></p>
+        </div>
+
+        <div class="content4 darkBack">
+            <p class="label3">TOTAL</p>
+            <p class="total">₹ <%= order.totalAmount %></p>
+        </div>
+
+        <div class="darkBack">
+            <p class="OD">Order Details</p>
+        </div>
+
+        <div class="product1">
+            <img class="item1" src="/uploads/<%= item.image[0] %>" alt="Product Image">
+            <div class="itemDetails">
+                <p class="mainName1"><%= item.ProductName %></p>
+                <p class="name1"><%= item.description %></p>
+                <p class="name1">Quantity: x<%= order.products[0].quantity %></p>
+
+                <div class="priceDetails">
+                    <p class="priceLabel">Order Status:</p>
+                    <p><%= order.products[0].orderStatus %></p>
+                </div>
+
+                <div class="priceDetails">
+                    <p class="priceLabel">Discount Percent:</p>
+                    <p>%<%= order.discountPercent %></p>
+                </div>
+
+                <div class="priceDetails">
+                    <p class="priceLabel">Price:</p>
+                    <p>₹ <%= item.price %></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="darkBack">
+            <p>Delivery Address</p>
+            <p class="address">
+                <%= order.address.name %><br>
+                <%= order.address.address %><br>
+                <%= order.address.city %>, <%= order.address.state %> - <%= order.address.zip %><br>
+                Phone: <%= order.address.phone %>
+            </p>
+        </div>
+
+        <div>
+            <p class="grandTotal">Grand Total: ₹ <%= order.totalAmount %></p>
+        </div>
+    </div>
+
+</body>
+</html>
+ 

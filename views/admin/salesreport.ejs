@@ -1,0 +1,344 @@
+<%-include('adminheader') %>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Report</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #bcbaba;
+        }
+
+        .breadcrumb-option {
+            background-color: #e5e6de;
+            padding: 15px 0;
+        }
+
+        .breadcrumb-item.active {
+            color: #353a37;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        .btn-toolbar {
+            margin-bottom: 20px;
+        }
+
+        .btn-toolbar .btn {
+            margin-right: 10px;
+        }
+
+        table {
+            background-color: #fff;
+            border-radius: 5px;
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        table th,
+        table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #383f3c;
+            color: #645e5e;
+        }
+
+        table tbody tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        /* ----------------------------------------------------------------------- */
+
+        body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+    }
+
+    .navbar {
+      background-color: #5b4e4e;
+      margin-bottom: 0;
+    }   
+    .sidebar {
+      border-radius: 10px;
+      position: fixed;
+      left: 5px;
+      top: 70px;
+      height: calc(100% - 75px); /* Adjust height to fit within viewport accounting for top offset */
+      width: 250px;
+      background-color: #282626;
+      padding-top: 60px;
+      overflow-y: auto; /* Ensure content doesn't overflow */
+    }
+
+    .sidebar a {
+      padding: 10px 15px;
+      text-decoration: none;
+      font-size: 18px;
+      color: white;
+      display: block;
+    }
+
+    .sidebar a:hover {
+      background-color: #e0cfcf;
+      color: #000;
+    }
+
+    .container {
+        padding-top: 11px;
+    padding-left: 142px;
+    max-width: 1499px;
+    margin: 3px auto;
+    }
+
+    h2 {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #7f7f7f;
+    }
+
+    th {
+      background-color: #5a5a5a;
+      color: white;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    button {
+      padding: 8px 12px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+    </style>
+</head>
+
+<body>
+    <section class="breadcrumb-option">
+        <!-- <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-chevron p-3 bg-body-tertiary rounded-2">
+                     <li class="breadcrumb-item">
+                        <a class="link-body-emphasis" href="/admin/usermanagement">
+                            <svg class="bi" width="16" height="16">
+                                <use xlink:href="#house-door-fill"></use>
+                            </svg>
+                            <span class="visually-hidden">Dashboard</span>
+                        </a>
+                    </li> 
+                    <li class="breadcrumb-item active" aria-current="page">
+                        Sales Report
+                    </li>
+                </ol>
+            </nav>
+        </div> -->
+    </section>
+      <div class="sidebar">
+    <div class="admin" style="color: #adadad; margin-left: 50px;margin-bottom: 30px;" ><h5>Admin Panel</h5></div>
+   <a href="/admin/Dashboard">Dashboard</a>
+   <a href="/admin/usermanagement">User Management</a>
+   <a href="/admin/productmanagement">Product Management</a>
+   <a href="/admin/categorymanagement">Category Management</a>
+   <a href="/admin/ordermanagement">Order Management</a>
+   <a href="/admin/sales-report">Reports</a>
+   <a href="/admin/couponsmanagement">Coupens</a>
+ </div>
+
+    <div class="container">
+        <h1>Sales Report</h1>
+        <div class="btn-toolbar">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="startDate">From:</label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" value="<%= startDate %>">
+                </div>
+                <div class="form-group">
+                    <label for="endDate">To:</label>
+                    <input type="date" class="form-control" id="endDate" name="endDate" value="<%= endDate %>">
+                </div>
+                <button type="submit" class="btn btn-primary">Get Report</button>
+                
+                <button type="button" class="btn btn-success" onclick="exportToExcel()">Export to Excel</button>
+                <button type="button" class="btn btn-danger" onclick="exportToPDF()">Export to PDF</button>
+                
+          
+
+            </form>
+        </div>
+
+        <table id="salesReportTable" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>SI.No</th>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>User</th>
+                    <th>Products</th>
+                    <th>Shipping Address</th>
+                    <th>Payment Method</th>
+                    <th>Status</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orders.forEach((order, index) => { %>
+                    <tr>
+                        <td>
+                            <%= index + 1 %>
+                        </td>
+                        <td>
+                            <%= order._id.toString().slice(-7).toUpperCase() %>
+                        </td>
+                        <td>
+                            <%= new Date(order.createdAt).toDateString() %>
+                        </td>
+                        <td>
+                            <%= order.customer[0] ? order.customer[0].firstname : 'N/A' %>
+                        </td>
+                        <td>
+                            <% if (order && order.orderedItems) { %>
+                                <ul>
+                                    <% order.orderedItems.forEach(item => { %>
+                                        <li>
+                                            <%= item.product_name %> (₹<%= item.price.toFixed(2) %>)(<%= item.quantity %>)
+                                        </li>
+                                    <% }) %>
+                                </ul>
+                            <% } else { %>
+                                <p>No order items found.</p>
+                            <% } %>
+                        </td>
+                        <td>
+                            <% if (order.address) { %>
+                                <p><strong>Name:</strong> <%= order?.address.name %></p>
+                                <p><strong>Phone:</strong> <%= order.address.phone %></p>
+                                <p><strong>Address:</strong> <%= order.address?.address %>, <%= order.address.city %>, <%= order.address.state %>, <%= order.address.zip %></p>
+                            <% } else { %>
+                                <p>No address found.</p>
+                            <% } %>
+                        </td>
+                        <td>
+                            <%= order.paymentMethod %>
+                        </td>
+                        <td>
+                            <%= order.status %>
+                        </td>
+                        <td>₹<%= order.totalAmount %></td>
+                    </tr>
+                
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- jQuery and DataTables -->
+    html
+    Copy code
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            $('#salesReportTable').DataTable();
+            
+            // Date validation
+            $('form').submit(function (event) {
+                var startDate = $('#startDate').val();
+                var endDate = $('#endDate').val();
+    
+                // Convert input dates to Date objects
+                var today = new Date();
+                var startDateObj = new Date(startDate);
+                var endDateObj = new Date(endDate);
+    
+                // Check if either startDate or endDate is in the future
+                if (startDateObj > today || endDateObj > today) {
+                    event.preventDefault(); // Prevent form submission
+    
+                    // Show SweetAlert warning
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Invalid Date',
+                        text: 'Future dates are not allowed for the sales report!',
+                        confirmButtonText: 'OK'
+                    });
+                    return false;
+                }
+    
+                // Check if end date is before the start date
+                if (endDateObj < startDateObj) {
+                    event.preventDefault(); // Prevent form submission
+    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Date Error',
+                        text: 'The end date cannot be before the start date.',
+                        confirmButtonText: 'OK'
+                    });
+                    return false;
+                }
+    
+            });
+        });
+    
+        function exportToExcel() {
+            var startDate = $('#startDate').val();
+            var endDate = $('#endDate').val();
+    
+            let url = `/admin/excel-salesreport?startDate=${startDate}&endDate=${endDate}`;
+            window.location.href = url;
+        }
+    
+        function exportToPDF() {
+            var startDate = $('#startDate').val();
+            var endDate = $('#endDate').val();
+    
+            let url = `/admin/pdf-salesreport?startDate=${startDate}&endDate=${endDate}`;
+            window.location.href = url;
+        }
+    </script>
+    
+
+
+
+</body>`
+
+</html>

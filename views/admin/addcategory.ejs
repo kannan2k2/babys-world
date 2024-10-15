@@ -1,0 +1,174 @@
+<%-include('adminheader') %>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Category</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .navbar {
+      background-color: #5b4e4e;
+      margin-bottom: 0;
+    }
+
+    .sidebar {
+      border-radius: 10px;
+      position: fixed;
+      left: 5px;
+      top: 70px;
+      height: calc(100% - 75px);
+      width: 250px;
+      background-color: #282626;
+      padding-top: 60px;
+      overflow-y: auto;
+    }
+
+    .sidebar a {
+      padding: 10px 15px;
+      text-decoration: none;
+      font-size: 18px;
+      color: white;
+      display: block;
+    }
+
+    .sidebar a:hover {
+      background-color: #e0cfcf;
+      color: #000;
+    }
+
+    .container {
+      padding-top:140px;
+      padding-left: 270px;
+      max-width: 1460px;
+      margin: 0 auto;
+    }
+
+    .card {
+      width: 100%;
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+    .btn-success {
+      padding: 8px 12px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation Bar -->
+ 
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="admin" style="color: #adadad; margin-left: 50px; margin-bottom: 30px;">
+      <h5>Admin Panel</h5>
+    </div>
+    <a href="#">Dashboard</a>
+    <a href="/admin/usermanagement">User Management</a>
+    <a href="/admin/productmanagement">Product Management</a>
+    <a href="/admin/categorymanagement">Category Management</a>
+    <a href="/admin/ordermanagement">Order Management</a>
+    <a href="/admin/sales-report">Reports</a>
+    <a href="/admin/couponsmanagement">Coupons</a>
+  </div>
+
+  <!-- Page Content -->
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h4>Add Category</h4>
+      </div>
+      <div class="card-body">
+        <form action="/admin/addcategorypost" method="POST">
+          <div class="form-group">
+            <label for="name">Category Name:</label>
+            <input type="text" id="name" name="name" class="form-control">
+            <label for="discountoffer">Category Offer:</label>
+            <input type="number" id="discountoffer" name="discountoffer" class="form-control"  min="0" max="100">
+            
+          </div>
+          <button type="submit" class="btn btn-success">Add Category</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent form submission
+        
+        let isValid = true;
+        let errorMessage = '';
+  
+        // Fetch form data
+        const nameField = form.querySelector('[name="name"]');
+        const discountField = form.querySelector('[name="discountoffer"]');
+  
+        // Basic validation
+        if (nameField && !nameField.value.trim()) {
+          isValid = false;
+          errorMessage = 'Please enter a category name!';
+        } 
+        else if (discountField) {
+          const discount = discountField.value;
+          if (discount === '' || isNaN(discount) || discount < 0 || discount > 100) {
+            isValid = false;
+            errorMessage = 'Please enter a valid category offer between 0 and 100!';
+          }
+        }
+  
+        // If invalid, show SweetAlert error
+        if (!isValid) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Validation Error',
+            text: errorMessage,
+          });
+        } else {
+          // Confirm submission via SweetAlert
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to submit this form?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, submit it!',
+            cancelButtonText: 'No, cancel!',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              form.submit(); // Submit the form
+            }
+          });
+        }
+      });
+    });
+  </script>
+  
+</body>
+
+</html>

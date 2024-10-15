@@ -1,0 +1,589 @@
+<%- include('header') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Light background */
+        }
+        .container {
+            margin-top: 50px;
+            padding: 20px;
+        }
+        .order-container {
+            border: 1px solid #dee2e6; /* Light gray border */
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fff; /* White background for order container */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow */
+        }
+        .order-info {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #343a40; /* Dark text color */
+        }
+        .product {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ced4da; /* Light gray border between products */
+            padding: 10px 0;
+        }
+        .product img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+        .product-info {
+            flex-grow: 1;
+        }
+        .product-details {
+            margin-top: 10px;
+        }
+        .btn-cancel {
+            background-color: #dc3545; /* Red cancel button */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-cancel:hover {
+            background-color: #c82333; /* Darker red on hover */
+        }
+        .pagination {
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .text-muted {
+            text-align: center;
+            margin-top: 20px;
+            color: #6c757d; /* Grayish text */
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* ----------------------------------------------------------------------------------------------- */
+
+         /* Modal Container */
+    .modal {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+        background-color: #fff;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    /* Close Button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* Form Elements */
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-size: 16px;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .btn-submit {
+        background-color: #28a745; /* Green background */
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: block;
+        margin: 0 auto;
+        font-size: 16px;
+    }
+
+    .btn-submit:hover {
+        background-color: #218838; /* Darker green on hover */
+    }
+
+    /* ------------------------------------------------------------------------------------------------------- */
+    /* cancel bottennnnnnnnnnnnnnn */
+
+    /* Add this CSS to your stylesheet */
+.btn-details {
+    background-color: #4CAF50; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 5px 10px; /* Some padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Get the element to respect padding */
+    font-size: 16px; /* Increase font size */
+    margin: 4px 2px; /* Some margin */
+    cursor: pointer; /* Pointer/hand icon */
+    border-radius: 8px; /* Rounded corners */
+    transition-duration: 0.4s; /* Smooth transition */
+}
+
+.btn-details:hover {
+    background-color: white; /* White background */
+    color: black; /* Black text */
+    border: 2px solid #4CAF50; /* Green border */
+}
+.btn-return {
+    background-color: #ff4c4c; /* Red color */
+    color: #fff; /* White text */
+    border: none; /* Remove border */
+    padding: 5px 10px; /* Add some padding */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.btn-return:hover {
+    background-color: #e63939; /* Darker red on hover */
+}
+/* --------------------------------------------------------------------------- */
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Button styles */
+.btn-return {
+    background-color: #ff4c4c;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-return:hover {
+    background-color: #e63939;
+}
+
+.btn-submit {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #45a049;
+}
+/* -------------------------------------------------------------------------------------------------- */
+
+
+    
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    } 
+    </style>
+</head>
+<body>
+    <div class="container">
+        <% if (orders.length > 0) { %>
+            <% orders.forEach((order) => { %>
+                <div class="order-container">
+                    <div class="order-info">
+                        <strong>Order ID:</strong> #<%= order._id.toString().slice(-7).toUpperCase() %>
+                       
+                    </div>
+                    <div class="product-details">
+                        <% order.products.forEach(item => { %>
+                            <div class="product">
+                                <img src="/uploads/<%= item.product.image[0] %>" alt="<%= item.product.ProductName %>">
+                                <div class="product-info">
+                                    <div><strong>Name:</strong> <%= item.product.ProductName %></div>
+                                    <div><strong>Quantity:</strong> <%= item.quantity %></div>
+                                    <div><strong>Price:</strong> ₹<%= Number(item.totalPrice) %></div>
+                                    <div><strong>Order Status:</strong> <%= item.orderStatus %></div>
+                                </div>
+                                
+                                <div>
+                                    <% if (order.paymentInfo.status=='Completed') { %>
+                              
+                                    <td>
+                                        <a href="/orderDetailsPage/<%= item.product._id %>/<%=order._id%>" class="btn-details">Order Details</a>
+                                        
+
+                                    </td>
+                                   
+            
+                                    <% if (item.orderStatus !== 'Cancelled' && item.orderStatus !== 'Delivered' && item.orderStatus !== 'Returned') { %>
+                                        <button class="btn-cancel" onclick="showCancelModal('<%= order._id %>', '<%= item._id %>','cancel')">Cancel Order</button>
+                                    <% } %>
+                                    <% if (item.orderStatus === 'Delivered') { %>
+                                        <button class="btn-return" onclick="showCancelModal('<%= order._id %>', '<%= item._id %>','return')">Return Order</button>
+                                    <% } %>
+
+                                    <% } %>
+
+                                        
+                                        
+                                </div>
+                            </div>
+              
+                        <% }) %>
+                    </div>
+                    <div><strong>Order Method:</strong> <%= order.paymentInfo.method %></div>
+                    <div><strong>Total Price:</strong> ₹<%= order.totalAmount %></div>
+
+              <% if (order.paymentInfo.status=='Failed') { %>
+                                <button class="btn-cancel" onclick="retry('<%= order.totalAmount %>','<%= order._id %>')">ReTry</button>
+
+                <% } %>
+
+                </div>
+            <% }) %>
+            
+            
+            
+        <% } else { %>
+            <h2 class="text-muted">Your Order History is Empty</h2>
+        <% } %>
+        <div id="cancelModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeCancelModal()">&times;</span>
+                <h2>Cancel Order</h2>
+                <form id="cancelForm" method="POST" action="/cancelorder/">
+                    <input type="hidden" name="orderId" id="orderId">
+                    <input type="hidden" name="itemId" id="itemId">
+                    <input type="hidden" name="status" id="status">
+                    <label for="Reason">Reason for Cancellation:</label><br>
+                    <textarea name="Reason" id="Reason" required></textarea><br>
+                    <button type="submit" class="btn-submit">Submit</button>
+                </form>
+            </div>
+        </div>
+        <!-- ----------------------------------------------------------------------------------------------- -->
+
+    
+        <!-- Pagination controls -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                    <a class="page-link" href="/userorderdetail?page=<%= currentPage - 1 %>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                        <a class="page-link" href="/userorderdetail?page=<%= i %>"><%= i %></a>
+                    </li>
+                <% } %>
+                <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                    <a class="page-link" href="/userorderdetail?page=<%= currentPage + 1 %>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        function showCancelModal(orderId, itemId,status) {
+            document.getElementById('orderId').value = orderId;
+            document.getElementById('itemId').value = itemId;
+            document.getElementById('status').value = status;  
+            document.getElementById('cancelModal').style.display = 'block';
+        }
+
+        function closeCancelModal() {
+            document.getElementById('cancelModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('cancelModal')) {
+                closeCancelModal();
+            }
+        }
+
+        async function retry(orderAmount, orderId) {
+  try {
+    // Create the order
+    const response = await fetch('/createOrder', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ amount: orderAmount, currency: 'INR' }),
+    });
+
+    const data = await response.json();
+
+    // Setup Razorpay options
+    const options = {
+      key: 'rzp_test_JkT3o5VYOxKgH3', // Replace with your Razorpay key
+      amount: data.amount,
+      currency: 'INR',
+      name: 'Babys World',
+      description: 'Test Transaction',
+      image: 'https://example.com/your_logo',
+      order_id: data.orderId,
+      handler: async function (response) {
+        try {
+          // Payment was successful, handle backend update
+          console.log('Payment successful! Payment ID:', response.razorpay_payment_id);
+
+          const successResponse = await fetch('/paymentRetry', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ orderId: orderId }),
+          });
+
+          if (!successResponse.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const result = await successResponse.json();
+          console.log('Success:', result);
+
+          // Redirect on success
+          window.location.href = '/ordersuccess';
+        } catch (error) {
+          console.error('Error:', error);
+          // Redirect or handle error on backend update
+          window.location.href = '/orderFailed';
+        }
+      },
+      prefill: {
+        name: 'Suryadarsh',
+        email: 'suryadarsh@example.com',
+        contact: '1000090000',
+      },
+      notes: {
+        address: 'Razorpay Corporate Office',
+      },
+      theme: {
+        color: '#3399cc',
+      },
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+
+    // Handle payment failure
+    rzp.on('payment.failed', function (response) {
+      console.log('Payment failed:', response.error.description);
+
+      // Send failure data to server
+     
+    });
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+
+        
+        // -----------------------------------------------------------------------------------------------
+
+    
+    // Handle form submission
+    document.getElementById('cancelForm').onsubmit = function(event) {
+        event.preventDefault();
+
+        const orderId = document.getElementById('orderId').value;
+        const itemId = document.getElementById('itemId').value;
+        const Reason = document.getElementById('Reason').value;
+        const status = document.getElementById('status').value;
+
+        fetch(`/cancelorder/${orderId}/${itemId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ Reason,status})
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                alert('Error cancelling order');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    };
+
+    // -----------------------------------------------------------------------------------------------------
+    // returnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+//     function showReturnModal(orderId, itemId) {
+//     document.getElementById('returnOrderId').value = orderId;
+//     document.getElementById('returnItemId').value = itemId;
+//     document.getElementById('returnModal').style.display = 'block';
+// }
+
+// // Close Return Modal
+// function closeReturnModal() {
+//     document.getElementById('returnModal').style.display = 'none';
+// }
+
+// // Close the modal when clicking outside of it
+// window.onclick = function(event) {
+//     if (event.target == document.getElementById('returnModal')) {
+//         closeReturnModal();
+//     }
+// };
+
+// // Handle Return Form Submission
+// document.getElementById('returnForm').onsubmit = function(event) {
+//     event.preventDefault();
+
+//     const orderId = document.getElementById('returnOrderId').value;
+//     const itemId = document.getElementById('returnItemId').value;
+//     const returnReason = document.getElementById('returnReason').value;
+
+
+  
+//     fetch(`/returnOrder/${returnOrderId}/${returnItemId}`, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ orderId, itemId, returnReason })
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         if (data.success) {
+//             alert('Return request submitted successfully');
+//             closeReturnModal();
+//             window.location.reload(); // Optionally, reload the page or update the UI
+//         } else {
+//             alert('Error submitting return request');
+//         }
+//     })
+//     .catch(error => console.error('Error:', error));
+// };
+    </script>
+    <%- include('footer') %>
+</body>
+</html>
