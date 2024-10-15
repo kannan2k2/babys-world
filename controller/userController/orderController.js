@@ -291,8 +291,8 @@ const orderDetailsPage = async (req, res) => {
 };
 
 const razorpay = new Razorpay({
-  key_id: process.env.key_id,
-  key_secret: process.env.key_secret,
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.RAZORPAY_KEY_SECRET,
 });
 
 const wallet = async (req, res) => {
