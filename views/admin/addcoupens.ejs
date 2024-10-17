@@ -217,6 +217,31 @@
   });
 });
   </script>
+
+<script>
+  const expiryDateInput = document.getElementById('expiryDate');
+  
+
+  const today = new Date();
+  
+
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  
+
+  const formattedTomorrow = tomorrow.toISOString().split('T')[0];
+  
+
+  expiryDateInput.setAttribute('min', formattedTomorrow);
+
+
+  expiryDateInput.addEventListener('change', function() {
+    if (expiryDateInput.value < formattedTomorrow) {
+      alert('Please select a valid date. You cannot select today or past dates.');
+      expiryDateInput.value = ''; e
+    }
+  });
+</script>
 </body>
 
 </html>

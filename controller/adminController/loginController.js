@@ -11,7 +11,7 @@ const { findOne } = require("../../model/otp");
 const exceljs = require("exceljs");
 const { error } = require("console");
 
-const login = (req, res) => {
+const login = (req,res) => {
   try {
     if (req.session.email) {
       return res.redirect("/admin/dashboard");
@@ -25,6 +25,7 @@ const login = (req, res) => {
 const loginpost = (req, res) => {
   const email = "admin@123";
   const password = "123";
+  
   if (email == req.body.email && password == req.body.password) {
     req.session.email = email;
     return res.redirect("/admin/dashboard");

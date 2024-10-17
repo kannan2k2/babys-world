@@ -87,7 +87,7 @@ const signupost = async (req, res) => {
         });
         await otpData.save();
 
-        res.render("user/otp", { email: data.email });
+        res.render("user/otp", {message:'', email: data.email });
       }
     });
   }
@@ -123,6 +123,8 @@ const otppost = async (req, res) => {
   const enteredOtp = data.join("");
 
   const { email } = req.session.userdata;
+
+  console.log(email.helloo)
 
   try {
     const otpRecord = await OTP.findOne({ email: email });

@@ -70,9 +70,17 @@
             </div>
             <button type="submit" class="btn btn-primary mb-3 custom-btn">Verify</button>
           </form>
+          
+          <div>
+            <% if (message) { %>
+              <p class="message"><%= message %></p>
+            <% } %>
+          </div>
+          
           <p class="resend text-muted mb-0">
             Didn't receive code? <span id="timer">Resend code in 59 seconds</span> 
             <a href="/resendOtp" id="resendLink" style="display:none;">Request again</a>
+
           </p>
           
           
@@ -86,7 +94,7 @@
       const inputs = document.querySelectorAll(".otp-field input");
       const form = document.getElementById("otpForm");
       const alertContainer = document.getElementById("alert-container");
-
+  
       inputs.forEach((input, index) => {
         input.addEventListener("input", () => {
           if (input.value.length === input.maxLength) {
@@ -96,7 +104,7 @@
             }
           }
         });
-
+  
         input.addEventListener("keydown", (e) => {
           if (e.key === "Backspace" && input.value === "") {
             if (index > 0) {
@@ -105,9 +113,9 @@
           }
         });
       });
-
+  
       inputs[0].focus();
-
+  
       form.addEventListener("submit", (e) => {
         e.preventDefault(); // Prevent the form from submitting immediately
         alertContainer.style.display = 'block';
@@ -115,23 +123,31 @@
           form.submit(); 
         }, 2000); 
       });
-
+  
       // Timer logic
       const timerElement = document.getElementById('timer');
       const resendLink = document.getElementById('resendLink');
-      let timeLeft = 59;
-
+      
+      // Check localStorage for remaining time
+      let timeLeft = localStorage.getItem('otpTimer') ? parseInt(localStorage.getItem('otpTimer')) : 59;
+  
+      // Update the timer display immediately
+      timerElement.textContent = `Resend code in ${timeLeft} seconds`;
+  
       const timer = setInterval(() => {
         if (timeLeft > 0) {
           timeLeft--;
+          localStorage.setItem('otpTimer', timeLeft); // Save remaining time
           timerElement.textContent = `Resend code in ${timeLeft} seconds`;
         } else {
           clearInterval(timer);
+          localStorage.removeItem('otpTimer'); // Clear timer from localStorage
           timerElement.style.display = 'none';
           resendLink.style.display = 'inline';
         }
       }, 1000);
     });
   </script>
+  
 </body>
 </html>

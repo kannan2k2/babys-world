@@ -109,10 +109,12 @@
             <label for="password">Password</label>
             <input type="password" class="form-control" id="password" placeholder="Password" name="password" oninput="checkPasswordStrength()" />
             <div id="password-strength" class="password-strength"></div>
+            <ul id="password-guidance" class="password-guidance"></ul>
         </div>
+        
 
         <div class="form-group">
-            <label for="referalcode">Referal Code</label>
+            <label for="referalcode">Referal Code (Optional)</label>
             <input type="text" class="form-control" id="referalcode" placeholder="Referal Code" name="referalcode" />
         </div>
 
@@ -190,32 +192,65 @@
         }
 
         function checkPasswordStrength() {
-            const password = document.getElementById("password").value;
-            const strengthElement = document.getElementById("password-strength");
+    const password = document.getElementById("password").value;
+    const strengthElement = document.getElementById("password-strength");
+    const guidanceElement = document.getElementById("password-guidance");
+    let guidanceMessages = [];
+    
+    let strength = "weak";
+    let strengthClass = "strength-weak";
+    let strengthScore = 0;
 
-            let strength = "weak";
-            let strengthClass = "strength-weak";
-            let strengthScore = 0;
+    // Check password conditions
+    if (password.length >= 8) {
+        strengthScore++;
+    } else {
+        guidanceMessages.push("At least 8 characters required.");
+    }
 
-            if (password.length >= 8) strengthScore++;
-            if (/[A-Z]/.test(password)) strengthScore++;
-            if (/[a-z]/.test(password)) strengthScore++;
-            if (/\d/.test(password)) strengthScore++;
-            if (/[@$!%*?&#]/.test(password)) strengthScore++;
+    if (/[A-Z]/.test(password)) {
+        strengthScore++;
+    } else {
+        guidanceMessages.push("At least 1 uppercase letter required.");
+    }
 
-            if (strengthScore >= 4) {
-                strength = "strong";
-                strengthClass = "strength-strong";
-            } else if (strengthScore >= 3) {
-                strength = "medium";
-                strengthClass = "strength-medium";
-            }
+    if (/[a-z]/.test(password)) {
+        strengthScore++;
+    } else {
+        guidanceMessages.push("At least 1 lowercase letter required.");
+    }
 
-            strengthElement.textContent = `Password Strength: ${strength}`;
-            strengthElement.className = `password-strength ${strengthClass}`;
+    if (/\d/.test(password)) {
+        strengthScore++;
+    } else {
+        guidanceMessages.push("At least 1 number required.");
+    }
 
-            return strength === "strong";
-        }
+    if (/[@$!%*?&#]/.test(password)) {
+        strengthScore++;
+    } else {
+        guidanceMessages.push("At least 1 special character (@, $, !, %, *, ?, &, #) required.");
+    }
+
+    // Determine the password strength based on score
+    if (strengthScore >= 4) {
+        strength = "strong";
+        strengthClass = "strength-strong";
+    } else if (strengthScore >= 3) {
+        strength = "medium";
+        strengthClass = "strength-medium";
+    }
+
+    // Update the password strength display
+    strengthElement.textContent = `Password Strength: ${strength}`;
+    strengthElement.className = `password-strength ${strengthClass}`;
+
+    // Display guidance messages
+    guidanceElement.innerHTML = guidanceMessages.map(message => `<li>${message}</li>`).join("");
+
+    return strength === "strong";
+}
+
     </script>
 </body>
 </html>

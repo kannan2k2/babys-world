@@ -9,57 +9,65 @@ const categoryProduct=require('../controller/adminController/categoryController'
 const orderController=require('../controller/adminController/orderController')
 const couponController=require('../controller/adminController/couponController')
 
-
+const admincheck=(req,res,next)=>{
+    const admin=req.session.email
+    if(!admin){
+        return res.redirect('/admin/login')
+        
+}else{
+        next()
+    }
+}
 
 router.get('/login',adminloginController.login)
 router.post('/loginpost',adminloginController.loginpost)
 
 
-router.get('/dashboard',admincontroller.dashboard)
-router.get('/getFilteredData',admincontroller.getFilteredData)
-router.get('/catgorywisales',admincontroller.catgorywisales)
-router.get('/getWeeklySales',admincontroller.getWeeklySales)
-router.get('/usermanagement',admincontroller.usermanagement)
-router.get('/adminblock/:id',admincontroller.adminblock)
+router.get('/dashboard',admincheck,admincontroller.dashboard)
+router.get('/getFilteredData',admincheck,admincontroller.getFilteredData)
+router.get('/catgorywisales',admincheck,admincontroller.catgorywisales)
+router.get('/getWeeklySales',admincheck,admincontroller.getWeeklySales)
+router.get('/usermanagement',admincheck,admincontroller.usermanagement)
+router.get('/adminblock/:id',admincheck,admincontroller.adminblock)
 
 
-router.get('/productmanagement',productController.productmanagement)
-router.get('/addproduct',uploadMiddle,productController.addproduct)
-router.post('/productpost',uploadMiddle,productController.productpost)
-router.get('/editaddproduct/:id',uploadMiddle,productController.editaddproduct)
-router.get('/softdeleteproduct/:id',productController.softdeleteproduct)
-router.post('/editproductpost',uploadMiddle,productController.editproductpost)
+router.get('/productmanagement',admincheck,productController.productmanagement)
+router.get('/addproduct',admincheck,uploadMiddle,productController.addproduct)
+router.post('/productpost',admincheck,uploadMiddle,productController.productpost)
+router.get('/editaddproduct/:id',admincheck,uploadMiddle,productController.editaddproduct)
+router.get('/softdeleteproduct/:id',admincheck,productController.softdeleteproduct)
+router.post('/editproductpost',uploadMiddle,admincheck,productController.editproductpost)
 
 
-router.get('/categorymanagement',categoryProduct.categorymanagement)
-router.get("/addcategory",categoryProduct.addcategory)
-router.post('/addcategorypost',categoryProduct.addcategorypost)
-router.get('/softdeletecategory/:id',categoryProduct.softdeletecategory)
-router.get('/editaddcategory/:id',categoryProduct.editaddcategory)
-router.post('/editaddcategory/:id',categoryProduct.editcategorypost)
+router.get('/categorymanagement',admincheck,categoryProduct.categorymanagement)
+router.get("/addcategory",admincheck,categoryProduct.addcategory)
+router.post('/addcategorypost',admincheck,categoryProduct.addcategorypost)
+router.get('/softdeletecategory/:id',admincheck,categoryProduct.softdeletecategory)
+router.get('/editaddcategory/:id',admincheck,categoryProduct.editaddcategory)
+router.post('/editaddcategory/:id',admincheck,categoryProduct.editcategorypost)
 
 
-router.get('/ordermanagement',orderController.ordermanagement)
-router.patch('/updatestatus/:orderId/:itemId',orderController.updatestatus)
-router.get('/orderDetailsPage/:proId/:_id',orderController.OrderDetailsPage)
+router.get('/ordermanagement',admincheck,orderController.ordermanagement)
+router.patch('/updatestatus/:orderId/:itemId',admincheck,orderController.updatestatus)
+router.get('/orderDetailsPage/:proId/:_id',admincheck,orderController.OrderDetailsPage)
 
 
-router.get('/couponsmanagement', couponController.couponsmanagement)
-router.get('/addCoupons', couponController.addcoupens)
-router.post('/addCouponPost', couponController.addCouponPost)
-router.get('/activeDactiveCoupon/:id', couponController.softDeleteCoupon)
-router.get('/deleteCoupon/:id', couponController.deleteCoupon)
+router.get('/couponsmanagement',admincheck,couponController.couponsmanagement)
+router.get('/addCoupons',admincheck,couponController.addcoupens)
+router.post('/addCouponPost',admincheck,couponController.addCouponPost)
+router.get('/activeDactiveCoupon/:id',admincheck,couponController.softDeleteCoupon)
+router.get('/deleteCoupon/:id',admincheck,couponController.deleteCoupon)
 
 
 
-router.get('/dashboard',admincontroller.dashboard)
+router.get('/dashboard',admincheck,admincontroller.dashboard)
 
-router.get('/delete-image/:id/:index',admincontroller.deleteImgEdit)
+router.get('/delete-image/:id/:index',admincheck,admincontroller.deleteImgEdit)
 
 
-router.get('/sales-report',admincontroller.getSalesReport)
-router.get('/excel-salesreport', admincontroller.exportToExcel)
-router.get('/pdf-salesreport',admincontroller.exportToPdf)
+router.get('/sales-report',admincheck,admincontroller.getSalesReport)
+router.get('/excel-salesreport',admincheck,admincontroller.exportToExcel)
+router.get('/pdf-salesreport',admincheck,admincontroller.exportToPdf)
 // router.get('/reportsmanagement',admincontroller.reportsmanagement)
 
 
