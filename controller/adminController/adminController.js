@@ -311,7 +311,7 @@ const getSalesReport = async (req, res) => {
         $group: {
           _id: "$_id",
           customer: { $first: "$customer" },
-          shippingAddress: { $first: "$address.address" },
+          shippingAddress: { $first: "$address" },
           paymentMethod: { $first: "$paymentInfo.method" },
           status: { $first: "$products.orderStatus" },
           totalAmount: { $first: "$totalAmount" },
@@ -400,8 +400,8 @@ const exportToExcel = async (req, res) => {
       {
         $group: {
           _id: "$_id",
-          customer: { $first: "$customer.firstname" },
-          shippingAddress: { $first: "$shippingAddress" },
+          // customer: { $first: "$customer.firstname" },
+          // shippingAddress: { $first: "$address" },
           paymentMethod: { $first: "$paymentInfo.method" },
           status: { $first: "$products.orderStatus" },
           totalAmount: { $first: "$totalAmount" },
@@ -426,13 +426,13 @@ const exportToExcel = async (req, res) => {
 
     worksheet.columns = [
       { header: "Order ID", key: "_id" },
-      { header: "Customer", key: "customer" },
+      // { header: "Customer", key: "customer" },
       { header: "Product Name", key: "productName" },
       { header: "Model", key: "model" },
       { header: "Price", key: "price" },
       { header: "Quantity", key: "quantity" },
       { header: "Total Amount", key: "totalAmount" },
-      { header: "Shipping Address", key: "shippingAddress" },
+      // { header: "Shipping Address", key: "shippingAddress" },
       { header: "Payment Method", key: "paymentMethod" },
       { header: "Status", key: "status" },
       { header: "Date", key: "createdAt" },
@@ -494,6 +494,9 @@ const exportToExcel = async (req, res) => {
   }
 };
 
+
+
+
 const exportToPdf = async (req, res) => {
   let startDate = req.query.startDate ? new Date(req.query.startDate) : new Date();
   let endDate = req.query.endDate ? new Date(req.query.endDate) : new Date();
@@ -533,8 +536,8 @@ const exportToPdf = async (req, res) => {
       {
         $group: {
           _id: "$_id",
-          customer: { $first: "$customer.firstname" },
-          shippingAddress: { $first: "$shippingAddress" },
+          // customer: { $first: "$customer.firstname" },
+          // shippingAddress: { $first: "$address" },
           paymentMethod: { $first: "$paymentInfo.method" },
           status: { $first: "$products.orderStatus" },
           totalAmount: { $first: "$totalAmount" },
@@ -570,13 +573,13 @@ const exportToPdf = async (req, res) => {
       orders.forEach((order, index) => {
         doc.text(`Order ${index + 1}`, { underline: true });
         order.orderedItems.forEach(item => {
-          doc.text(`Product Name: ${item.productName}`);
+          // doc.text(`Product Name: ${item.productName}`);
           doc.text(`Price: ₹${item.price.toFixed(2)}`);
           doc.text(`Quantity: ${item.quantity}`);
           doc.text(`Item Total: ₹${item.itemTotal.toFixed(2)}`);
           doc.moveDown();
         });
-        doc.text(`Shipping Address: ${order.shippingAddress}`);
+        // doc.text(`Shipping Address: ${order.shippingAddress}`);
         doc.text(`Payment Method: ${order.paymentMethod}`);
         doc.text(`Order Status: ${order.status}`);
         doc.text(`Order Total: ₹${order.totalAmount.toFixed(2)}`);
@@ -591,6 +594,7 @@ const exportToPdf = async (req, res) => {
       res.status(500).send('Internal Server Error');
     }
 };
+
 
 
 const catgorywisales = async (req, res) => {

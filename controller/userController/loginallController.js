@@ -259,7 +259,7 @@ const resendOtp = async (req, res) => {
       // });
       // await otpData.save();
 
-      res.render("user/otp", { email: email });
+      res.render("user/otp", {message:'', email: email });
     }
   });
 };

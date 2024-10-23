@@ -24,11 +24,11 @@ router.post('/loginpost',adminloginController.loginpost)
 
 
 router.get('/dashboard',admincheck,admincontroller.dashboard)
-router.get('/getFilteredData',admincheck,admincontroller.getFilteredData)
-router.get('/catgorywisales',admincheck,admincontroller.catgorywisales)
-router.get('/getWeeklySales',admincheck,admincontroller.getWeeklySales)
-router.get('/usermanagement',admincheck,admincontroller.usermanagement)
-router.get('/adminblock/:id',admincheck,admincontroller.adminblock)
+router.get('/getFilteredData',admincontroller.getFilteredData)
+router.get('/catgorywisales',admincontroller.catgorywisales)
+router.get('/getWeeklySales',admincontroller.getWeeklySales)
+router.get('/usermanagement',admincontroller.usermanagement)
+router.get('/adminblock/:id',admincontroller.adminblock)
 
 
 router.get('/productmanagement',admincheck,productController.productmanagement)
@@ -36,7 +36,7 @@ router.get('/addproduct',admincheck,uploadMiddle,productController.addproduct)
 router.post('/productpost',admincheck,uploadMiddle,productController.productpost)
 router.get('/editaddproduct/:id',admincheck,uploadMiddle,productController.editaddproduct)
 router.get('/softdeleteproduct/:id',admincheck,productController.softdeleteproduct)
-router.post('/editproductpost',uploadMiddle,admincheck,productController.editproductpost)
+router.post('/editproductpost',admincheck,uploadMiddle,productController.editproductpost)
 
 
 router.get('/categorymanagement',admincheck,categoryProduct.categorymanagement)

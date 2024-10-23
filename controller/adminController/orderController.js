@@ -40,13 +40,15 @@ const OrderDetailsPage = async (req, res) => {
 
 const ordermanagement = async (req, res) => {
   try {
+    console.log("Hellooooo");
+    
     const orders = await Order.find({})
       .populate("products.product")
       .populate({ path: "user" })
       .exec();
     console.log(orders, "new");
 
-    res.render("admin/ordermanagement", { orders });
+    res.render("admin/ordermanagement",{ orders });
   } catch (error) {
     console.error("error updating user:", error);
   }

@@ -15,6 +15,7 @@ const Coupon = require("../../model/coupon");
 const Category = require("../../model/category");
 
 const sucessOrderRuntime = async (req, res) => {
+  console.log('helloo test1223')
   try {
     console.log(req.body);
     const {
@@ -248,16 +249,18 @@ const cancelorder = async (req, res) => {
 };
 
 const createOrder = async (req, res) => {
+  console.log('helloo123321')
   const { amount } = req.body;
 
   const options = {
     amount: amount * 100,
     currency: "INR",
   };
+  console.log(options , 'hello')
 
   try {
     const order = await razorpay.orders.create(options);
-
+console.log(order,'ooooooooooooooooo')
     res.json(order);
   } catch (error) {
     console.error(error);
@@ -292,7 +295,7 @@ const orderDetailsPage = async (req, res) => {
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.RAZORPAY_KEY_SECRET,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
 const wallet = async (req, res) => {

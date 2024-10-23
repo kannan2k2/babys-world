@@ -170,13 +170,13 @@
     </section>
       <div class="sidebar">
     <div class="admin" style="color: #adadad; margin-left: 50px;margin-bottom: 30px;" ><h5>Admin Panel</h5></div>
-   <a href="/admin/Dashboard">Dashboard</a>
-   <a href="/admin/usermanagement">User Management</a>
-   <a href="/admin/productmanagement">Product Management</a>
-   <a href="/admin/categorymanagement">Category Management</a>
-   <a href="/admin/ordermanagement">Order Management</a>
-   <a href="/admin/sales-report">Reports</a>
-   <a href="/admin/couponsmanagement">Coupons</a>
+    <a href="/admin/Dashboard">Dashboard</a>
+    <a href="/admin/usermanagement">User Management</a> 
+    <a href="/admin/ordermanagement">Order Management</a>
+    <a href="/admin/productmanagement">Product Management</a>     
+    <a href="/admin/categorymanagement">Category Management</a>
+    <a href="/admin/couponsmanagement">Coupons</a>
+    <a href="/admin/sales-report">Reports</a>
  </div>
 
     <div class="container">
@@ -207,9 +207,9 @@
                     <th>SI.No</th>
                     <th>Order ID</th>
                     <th>Order Date</th>
-                    <th>User</th>
+                 
                     <th>Products</th>
-                    <th>Shipping Address</th>
+                    <!-- <th>Shipping Address</th> -->
                     <th>Payment Method</th>
                     <th>Status</th>
                     <th>Total Amount</th>
@@ -227,9 +227,9 @@
                         <td>
                             <%= new Date(order.createdAt).toDateString() %>
                         </td>
-                        <td>
-                            <%= order.customer[0] ? order.customer[0].firstname : 'N/A' %>
-                        </td>
+                        <!-- <td>
+                         
+                        </td> -->
                         <td>
                             <% if (order && order.orderedItems) { %>
                                 <ul>
@@ -243,15 +243,16 @@
                                 <p>No order items found.</p>
                             <% } %>
                         </td>
-                        <td>
-                            <% if (order.address) { %>
-                                <p><strong>Name:</strong> <%= order?.address.name %></p>
-                                <p><strong>Phone:</strong> <%= order.address.phone %></p>
-                                <p><strong>Address:</strong> <%= order.address?.address %>, <%= order.address.city %>, <%= order.address.state %>, <%= order.address.zip %></p>
+                        <!-- <td>
+                             
+                            <% if  (order.shippingAddress){ %>
+                            
+                                <!-- <p><strong>Name:</strong> <%= order.shippingAddress.name %></p> -->
+                                <p><strong>Address:</strong> <%= order.shippingAddress.address %>, <%= order.shippingAddress.city %>, <%= order.shippingAddress.state %>, <%= order.shippingAddress.zip %></p>
                             <% } else { %>
                                 <p>No address found.</p>
                             <% } %>
-                        </td>
+                        </td> -->
                         <td>
                             <%= order.paymentMethod %>
                         </td>
