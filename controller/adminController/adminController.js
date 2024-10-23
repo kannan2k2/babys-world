@@ -38,6 +38,18 @@ const dashboard = async (req, res) => {
       { $sort: { _id: 1 } },
     ]);
 
+const salesDataWeekly = await Order.aggregate([
+  {
+    $group: {
+      _id: { $week: "$createdAt" },
+      totalSales: { $sum: "$totalAmount" },
+    },
+  },
+  { $sort: { _id: 1 } },
+]);
+
+console.log("Weekly Sales Data:", salesDataWeekly);
+
     // Top 10 categories
     const topCategories = await Order.aggregate([
       { $unwind: "$products" },
@@ -98,11 +110,11 @@ const dashboard = async (req, res) => {
 
     res.render("admin/dashboard", {
       topProducts,
-      // topCategories,
-      salesDataYearly,
-      salesDataMonthly,
-      paymentMethods,
-      totalQuantitySold,
+  salesDataYearly,
+  salesDataMonthly,
+  salesDataWeekly,
+  paymentMethods,
+  totalQuantitySold,
     });
   } catch (err) {
     console.error("Error fetching data:", err);

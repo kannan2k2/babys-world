@@ -72,11 +72,4 @@ router.get('/pdf-salesreport',admincheck,admincontroller.exportToPdf)
 
 
 
-
-
-
-  
-
-
-
 module.exports=router

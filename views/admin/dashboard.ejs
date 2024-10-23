@@ -368,7 +368,7 @@ li {
     <div class="admin" style="color: #adadad; margin-left: 20px; margin-bottom: 30px;">
       <h5>Admin Panel</h5>
     </div>
-    <a href="/admin/Dashboard">Dashboard</a>
+    <a href="#">Dashboard</a>
     <a href="/admin/usermanagement">User Management</a> 
     <a href="/admin/ordermanagement">Order Management</a>
     <a href="/admin/productmanagement">Product Management</a>     
@@ -435,6 +435,7 @@ li {
 </div>
 </div>
 </div>
+
 <!-- ---------------------------------------------------------------------------------------------------------------------------- -->
       <!-- Sales Data -->
      <div class="salesData card">
@@ -504,48 +505,58 @@ li {
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     // Sales Chart
-    const salesLabels = [<% salesDataYearly.forEach(sale => { %>'<%= sale._id %>', <% }); %>];
-    const salesData = [<% salesDataYearly.forEach(sale => { %><%= sale.totalSales %>, <% }); %>];
-    const salesCtx = document.getElementById('salesChart').getContext('2d');
-    new Chart(salesCtx, {
-        type: 'bar',
-        data: {
-            labels: salesLabels,
-            datasets: [{
-                label: 'Total Sales',
-                data: salesData,
-                backgroundColor: [
-      'rgba(255, 99, 132, 0.2)',
-      'rgba(255, 159, 64, 0.2)',
-      'rgba(255, 205, 86, 0.2)',
-      'rgba(75, 192, 192, 0.2)',
-      'rgba(54, 162, 235, 0.2)',
-      'rgba(153, 102, 255, 0.2)',
-      'rgba(201, 203, 207, 0.2)'
-    ],
-    borderColor: [
-      'rgb(255, 99, 132)',
-      'rgb(255, 159, 64)',
-      'rgb(255, 205, 86)',
-      'rgb(75, 192, 192)',
-      'rgb(54, 162, 235)',
-      'rgb(153, 102, 255)',
-      'rgb(201, 203, 207)'
-    ],
-    borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            },
-            responsive: true,
-            maintainAspectRatio: false
-        }
-    });
+    const salesYearlyLabels = [<% salesDataYearly.forEach(sale => { %>'<%= sale._id %>', <% }); %>];
+const salesYearlyData = [<% salesDataYearly.forEach(sale => { %><%= sale.totalSales %>, <% }); %>];
 
+const salesMonthlyLabels = [<% salesDataMonthly.forEach(sale => { %>'<%= sale._id %>', <% }); %>];
+const salesMonthlyData = [<% salesDataMonthly.forEach(sale => { %><%= sale.totalSales %>, <% }); %>];
+
+const salesWeeklyLabels = [<% salesDataWeekly.forEach(sale => { %>'<%= sale._id %>', <% }); %>];
+const salesWeeklyData = [<% salesDataWeekly.forEach(sale => { %><%= sale.totalSales %>, <% }); %>];
+
+const salesCtx = document.getElementById('salesChart').getContext('2d');
+
+new Chart(salesCtx, {
+    type: 'bar',
+    data: {
+        labels: salesYearlyLabels,  // Initially showing yearly sales
+        datasets: [
+            {
+                label: 'Yearly Sales',
+                data: salesYearlyData,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Monthly Sales',
+                data: salesMonthlyData,
+                backgroundColor: 'rgba(75, 192, 75, 0.2)',  // Light green with transparency
+                borderColor: 'rgba(75, 192, 75, 1)',  
+                borderWidth: 1
+            },
+            {
+                label: 'Weekly Sales',
+                data: salesWeeklyData,
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1
+            }
+        ]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+
+    
     // Top Products Chart
     document.addEventListener('DOMContentLoaded', function() {
       const topProducts = <%- JSON.stringify(topProducts) %>;
@@ -612,6 +623,8 @@ li {
         }
       });
     });
+
+    
   </script>
 </body>
 </html>

@@ -209,7 +209,7 @@
                     <th>Order Date</th>
                  
                     <th>Products</th>
-                    <!-- <th>Shipping Address</th> -->
+                   
                     <th>Payment Method</th>
                     <th>Status</th>
                     <th>Total Amount</th>
@@ -243,16 +243,6 @@
                                 <p>No order items found.</p>
                             <% } %>
                         </td>
-                        <!-- <td>
-                             
-                            <% if  (order.shippingAddress){ %>
-                            
-                                <!-- <p><strong>Name:</strong> <%= order.shippingAddress.name %></p> -->
-                                <p><strong>Address:</strong> <%= order.shippingAddress.address %>, <%= order.shippingAddress.city %>, <%= order.shippingAddress.state %>, <%= order.shippingAddress.zip %></p>
-                            <% } else { %>
-                                <p>No address found.</p>
-                            <% } %>
-                        </td> -->
                         <td>
                             <%= order.paymentMethod %>
                         </td>
